@@ -35,7 +35,7 @@
 
 html {
   /** Colors */
-  --bg-color: #313131;
+  --bg-color: #000000;
   --bg-secondary: #7E4343;
 
   --brand-color: #D02128;
@@ -47,8 +47,8 @@ html {
 
 
   --primary-color: #ffffff;
-  --secondary-color: #F2F2F2;
-  --tertiary-color: #111111;
+  --secondary-color: #ffffff;
+  --tertiary-color: #ffffff;
   --border-primary: #4F4F4F;
   --border-secondary: #F2F2F2;
   --border-tertary: #020617;

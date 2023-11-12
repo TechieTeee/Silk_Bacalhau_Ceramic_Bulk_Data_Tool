@@ -103,7 +103,7 @@ function Home({defaultPosts}) {
               <Header />
 
               {/* Hero section with main title and description */}
-              <Hero title="BanklessDeSci Community Forum" description="Just a bunch of bankless nomads doing science without permission" />
+              <Hero title="BanklessDeSci Community Forum" description="Doing science without permission" />
 
               {/* Page content */}
               <section>
