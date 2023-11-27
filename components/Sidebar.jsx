@@ -57,6 +57,12 @@ const RecentDiscussions = () => {
 
   return(
     <div>
+      <div className="text-xs uppercase text-tertiary font-semibold mb-4">Voting</div>
+      <h3 className="text-sm mb-1">
+        <Link className="text-primary font-semibold hover:underline" href='/proposals'>Proposals</Link>
+      </h3>
+
+      <div className='mt-4' />
       <div className="text-xs uppercase text-tertiary font-semibold mb-4">Active Discussions</div>
       <ul className="space-y-6">
         {(posts && posts.length > 0) ?
