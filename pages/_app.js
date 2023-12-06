@@ -18,7 +18,7 @@ global.orbis_context = "kjzl6cwe1jw14a0hk6aa2v861m4uz3plo20suhkasrnwm9nnhwflxjob
 global.orbis_chat_context = "kjzl6cwe1jw14a0hk6aa2v861m4uz3plo20suhkasrnwm9nnhwflxjobudolhc9";
 
 let orbis = new Orbis({
-  useLit: false,
+  useLit: true,
   node: "https://node2.orbis.club",
   PINATA_GATEWAY: 'https://orbis.mypinata.cloud/ipfs/',
   PINATA_API_KEY: process.env.NEXT_PUBLIC_PINATA_API_KEY,
