@@ -36,4 +36,3 @@ export function getIpfsLink(media) {
 
   return _url;
 }
-export { default } from "./Inbox";
