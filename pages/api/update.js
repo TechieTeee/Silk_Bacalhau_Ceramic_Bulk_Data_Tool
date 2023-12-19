@@ -12,7 +12,7 @@ export default async function updateContext(req, res) {
     PINATA_SECRET_API_KEY: process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY,
   });
 
-  const key = fromString(SEED);
+  const key = fromString(SEED, "base16");
 
   await orbis.connectWithSeed(key);
   const whiteList = req.body;
