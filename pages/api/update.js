@@ -12,11 +12,11 @@ export default async function updateContext(req, res) {
     PINATA_SECRET_API_KEY: process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY,
   });
 
-  const key = fromString(SEED);
-
-  await orbis.connectWithSeed(key);
+  const key = fromString(SEED, "base16");
+  const connected = await orbis.connectWithSeed(key);
+  console.log(connected, "connected");
   const whiteList = req.body;
-
+  
   try {
     // wait 2 seconds before continuing with the below
     await new Promise((resolve) => setTimeout(resolve, 2000));
