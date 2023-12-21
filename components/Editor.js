@@ -69,7 +69,7 @@ const Editor = ({ post }) => {
       const uniqueArr = [...new Set(arr)];
       const multipleRecipients = uniqueArr.filter(
         //isolate instances where the recipient value appears more than once
-        (a) => uniqueArr.filter((b) => b.recipient === a.recipient).length > 0
+        (a) => uniqueArr.filter((b) => b.recipient === a.recipient).length > 1
       );
 
       const final = [...new Set(multipleRecipients.map((a) => a.recipient))];
