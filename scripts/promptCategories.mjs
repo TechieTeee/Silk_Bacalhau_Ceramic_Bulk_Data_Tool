@@ -5,15 +5,15 @@ export const prompt = async (questions) => {
   setTimeout(async () => {
     const answers = await inquirer.prompt(questions);
     const categories = [];
-    if (answers.categories) {
-      const catNumber = await inquirer.prompt([
-        {
-          type: "input",
-          name: "number",
-          message: "How many categories do you want to add?",
-        },
-      ]);
-      for (let i = 0; i < catNumber.number; i++) {
+    if (answers.number) {
+    //   const catNumber = await inquirer.prompt([
+    //     {
+    //       type: "input",
+    //       name: "number",
+    //       message: "How many categories do you want to add?",
+    //     },
+    //   ]);
+      for (let i = 0; i < answers.number; i++) {
         const cat = await inquirer.prompt([
           {
             type: "input",
@@ -76,16 +76,16 @@ export const projectQ = [
     name: "contextName",
     message: "Enter a name for the primary context your project will use: ",
   },
-  {
-    type: "confirm",
-    name: "contextGate",
-    message:
-      "Do you want your primary context to be gated? (you will have the option in the next few questions to gate based on post category - gating at this level automatically gates all categories) ",
-  },
-  {
-    type: "confirm",
-    name: "categories",
-    message: "Do you want to add any categories to your project?",
+//   {
+//     type: "confirm",
+//     name: "contextGate",
+//     message:
+//       "Do you want your primary context to be gated? (you will have the option in the next few questions to gate based on post category - gating at this level automatically gates all categories) ",
+//   },
+{
+    type: "input",
+    name: "number",
+    message: "How many categories do you want to add?",
   },
 ];
 prompt(projectQ);

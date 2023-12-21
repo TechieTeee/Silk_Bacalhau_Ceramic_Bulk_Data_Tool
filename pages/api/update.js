@@ -1,7 +1,7 @@
 import { Orbis } from "@orbisclub/components";
 import { fromString } from "uint8arrays/from-string";
 
-const CONTEXT = process.env.ORBCONTEXT;
+
 const SEED = process.env.SEED;
 
 export default async function updateContext(req, res) {
@@ -11,12 +11,13 @@ export default async function updateContext(req, res) {
     PINATA_API_KEY: process.env.NEXT_PUBLIC_PINATA_API_KEY,
     PINATA_SECRET_API_KEY: process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY,
   });
-
+  const CONTEXT = req.body.pop().category;
+  console.log(CONTEXT, "CONTEXT");
   const key = fromString(SEED, "base16");
-
-  await orbis.connectWithSeed(key);
+  const connected = await orbis.connectWithSeed(key);
+  console.log(connected, "connected");
   const whiteList = req.body;
-
+  
   try {
     // wait 2 seconds before continuing with the below
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -25,10 +26,12 @@ export default async function updateContext(req, res) {
     const currContext = await orbis.getContext(CONTEXT);
     console.log(currContext, "currContext");
     console.log(currContext.data.content);
+    if(currContext.data.content.accessRules.length > 0){
     const currAccessRules = currContext.data.content.accessRules.filter(
       (item) => item.type === "did"
     );
     const currWhiteList = currAccessRules[0].authorizedUsers;
+    console.log(currWhiteList, "currWhiteList");
     console.log(
       currWhiteList.length === whiteList.length,
       "currWhiteList === whiteList"
@@ -50,8 +53,24 @@ export default async function updateContext(req, res) {
         },
       ],
     });
-    console.log(update);
-    return res.json(update);
+    console.log('update');
+    return res.json('update');
+  } else {
+    const mapped = whiteList.map((item) => {
+      return { did: item };
+    });
+    const update = await orbis.updateContext(CONTEXT, {
+      ...currContext.data.content,
+      accessRules: [
+        {
+          type: "did",
+          authorizedUsers: mapped,
+        },
+      ],
+    });
+    console.log('update');
+    return res.json('update');
+  }
   } catch (err) {
     res.json({
       err,
