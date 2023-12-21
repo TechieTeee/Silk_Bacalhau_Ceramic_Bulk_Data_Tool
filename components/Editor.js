@@ -6,9 +6,8 @@ import {
   AccessRulesModal,
   checkContextAccess,
 } from "@orbisclub/components";
-import ReactTimeAgo from "react-time-ago";
 import Link from "next/link";
-import { shortAddress, getIpfsLink, getTimestamp, sleep } from "../utils";
+import {  getIpfsLink, getTimestamp, sleep } from "../utils";
 import { useRouter } from "next/router";
 import { ExternalLinkIcon, LinkIcon, CodeIcon, LoadingCircle } from "./Icons";
 import ArticleContent from "./ArticleContent";
@@ -48,11 +47,10 @@ const Editor = ({ post }) => {
   /** Will load the details of the context and check if user has access to it  */
   useEffect(() => {
     if (category && category != "") {
-      updateList();
       loadContextDetails();
     }
 
-    async function updateList() {
+    async function updateList(category) {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -71,12 +69,12 @@ const Editor = ({ post }) => {
       const uniqueArr = [...new Set(arr)];
       const multipleRecipients = uniqueArr.filter(
         //isolate instances where the recipient value appears more than once
-        (a) => uniqueArr.filter((b) => b.recipient === a.recipient).length > 1
+        (a) => uniqueArr.filter((b) => b.recipient === a.recipient).length > 0
       );
 
       const final = [...new Set(multipleRecipients.map((a) => a.recipient))];
-      console.log(final);
-
+      final.push({category})
+      console.log(final, "final");
       const newOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,6 +92,14 @@ const Editor = ({ post }) => {
       setHasAccess(false);
       let { data, error } = await orbis.getContext(category);
       console.log("Context details", data);
+      if(data.content.accessRules.length > 0){
+        const currAccessRules = data.content.accessRules.filter(
+          (item) => item.type === "did"
+        );
+        if(currAccessRules.length > 0){
+          await updateList(category);
+        }
+      }
       if (data && data.content) {
         /** Save context access rules in state */
         setCategoryAccessRules(
@@ -104,12 +110,14 @@ const Editor = ({ post }) => {
         if (!data.content.accessRules || data.content.accessRules.length == 0) {
           setHasAccess(true);
         } else {
-          checkContextAccess(user, credentials, data.content?.accessRules, () =>
+          console.log("Checking access rules...");
+          checkContextAccess(user, data.content?.accessRules, () =>
             setHasAccess(true)
           );
         }
       }
       setAccessRulesLoading(false);
+      console.log(data.content.context)
     }
   }, [category, credentials]);
 
