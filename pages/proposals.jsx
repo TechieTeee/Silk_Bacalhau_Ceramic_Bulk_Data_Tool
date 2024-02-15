@@ -267,10 +267,10 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">Create a New Proposal | BanklessDeSci Hub</title>
+        <title key="title">Create a New Proposal | WaterDAO </title>
         <meta
           property="og:title"
-          content="Create a New Proposal | BanklessDeSci Hub"
+          content="Create a New Proposal | WaterDAO Hub"
           key="og_title"
         />
 
@@ -295,7 +295,7 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Create a New Proposal on the BanklessDeSci Hub"
+                title="Create a New Proposal on the WaterDAO Hub"
                 description="You are about to share a new proposal. Make sure to read our rules before doing so."
                 image
               />
@@ -493,7 +493,7 @@ export default function Create() {
                                 className="btn-sm py-1.5 btn-brand"
                                 onClick={async () => {
                                   // window.open(
-                                  //   `https://snapshot.org/#/majac.eth/proposal/${proposal.id}`
+                                  //   `https://snapshot.org/#/verifiedtalent.eth/proposal/${proposal.id}`
                                   // );
                                   await getProposal(proposal.id);
                                 }}

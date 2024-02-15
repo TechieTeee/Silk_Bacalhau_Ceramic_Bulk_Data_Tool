@@ -24,8 +24,8 @@ function ProposalsHome() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">BanklessDeSci Community Hub | Orbis</title>
-        <meta property="og:title" content="BanklessDeSci Community Hub | BanklessDAO" key="og_title" />
+        <title key="title">WaterDAO Community Hub | Orbis</title>
+        <meta property="og:title" content="WaterDAO Community Hub | WaterDAO" key="og_title" />
 
         {/** Description */}
         <meta name="description" content="An open and decentralized social application. Built using Ceramic and Orbis Protocol." key="description"></meta>
@@ -43,7 +43,7 @@ function ProposalsHome() {
               <Header />
 
               {/* Hero section with main title and description */}
-              <Hero title="BanklessDeSci Community Hub" description="Doing science without permission" />
+              <Hero title="WaterDAO Community Hub" description="A decentralized research organization" />
 
               {/* Page content */}
               <section>
@@ -119,7 +119,7 @@ async function onCompleteProposal(survey) {
     const blockNumberSnapshot = 13620822;
 
     const receipt = await client.proposal(web3, account, {
-      space: 'banklessdesci.eth', // TODO: Replace with your space name
+      space: 'verifiedtalent.eth', // TODO: Replace with your space name
       type,
       title,
       body,
@@ -217,7 +217,7 @@ const Proposals = () => {
                 
                 // TODO: Likely, these values will come from user input
                 const choice = 0 // Replace with the choice index
-                const space = 'banklessdesci.eth'; // TODO: Replace with your space name
+                const space = 'verifiedtalent.eth'; // TODO: Replace with your space name
 
                 const receipt = await client.vote(web3, account, {
                   proposal: proposal.id,

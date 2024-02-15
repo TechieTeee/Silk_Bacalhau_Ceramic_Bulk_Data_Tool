@@ -24,22 +24,22 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">Share a new post | BanklessDeSci Hub</title>
+        <title key="title">Share a new post | WaterDO Hub</title>
         <meta
           property="og:title"
-          content="Share a new post | BanklessDeSci Hub"
+          content="Share a new post | WaterDAO Hub"
           key="og_title"
         />
 
         {/** Description */}
         <meta
           name="description"
-          content="Discuss the future of BanklessDeSci"
+          content="Discuss the future of WaterDAO"
           key="description"
         ></meta>
         <meta
           property="og:description"
-          content="Discuss the future of BanklessDeSci"
+          content="Discuss the future of WaterDAO"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />
@@ -52,7 +52,7 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Sharing a new post on the BanklessDeSci Hub"
+                title="Sharing a new post on the WaterDAO Hub"
                 description="You are about to share a new post. Make sure to read our rules before doing so."
                 image
               />

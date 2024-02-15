@@ -24,8 +24,8 @@ function Footer() {
                   </Link>
                 </li>*/}
                 <li>
-                  <Link className="text-secondary hover:underline flex flex-row items-center" href="https://www.banklessdesci.org/" target="_blank">
-                    Built by BanklessDAO
+                  <Link className="text-secondary hover:underline flex flex-row items-center" href="https://www.rh2o.app" target="_blank">
+                    Built by WaterLab
                   </Link>
                 </li>
 
@@ -41,7 +41,7 @@ function Footer() {
                 <Link
                   className="flex justify-center items-center text-brand text-brand-hover"
                   target="_blank"
-                  href="https://twitter.com/BanklessDeSci">
+                  href="https://x.com/_WaterDAO">
                   <TwitterIcon />
                 </Link>
               </li>
@@ -56,7 +56,7 @@ function Footer() {
             </ul>
 
             {/* Copyright
-            <div className="text-sm text-secondary">Copyright © BanklessDeSci. All rights reserved.</div> */}
+            <div className="text-sm text-secondary">Copyright © WaterLab. All rights reserved.</div> */}
           </div>
         </div>
       </div>

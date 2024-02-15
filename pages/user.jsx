@@ -21,10 +21,10 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">View your attestations | BanklessDeSci Hub</title>
+        <title key="title">View your attestations | WaterDAO Hub</title>
         <meta
           property="og:title"
-          content="View Attestations | BanklessDeSci Hub"
+          content="View Attestations | WaterDAO Hub"
           key="og_title"
         />
 
