@@ -24,8 +24,8 @@ function ProposalsHome() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">WaterDAO Community Hub | Orbis</title>
-        <meta property="og:title" content="WaterDAO Community Hub | WaterDAO" key="og_title" />
+        <title key="title">WaterLab Community Hub | Orbis</title>
+        <meta property="og:title" content="WaterLab Community Hub | WaterLab" key="og_title" />
 
         {/** Description */}
         <meta name="description" content="An open and decentralized social application. Built using Ceramic and Orbis Protocol." key="description"></meta>
@@ -43,7 +43,7 @@ function ProposalsHome() {
               <Header />
 
               {/* Hero section with main title and description */}
-              <Hero title="WaterDAO Community Hub" description="A decentralized research organization" />
+              <Hero title="WaterLab Community Hub" description="A decentralized research organization" />
 
               {/* Page content */}
               <section>

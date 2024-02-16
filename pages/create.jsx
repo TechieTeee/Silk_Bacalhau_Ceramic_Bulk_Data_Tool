@@ -27,19 +27,19 @@ export default function Create() {
         <title key="title">Share a new post | WaterDO Hub</title>
         <meta
           property="og:title"
-          content="Share a new post | WaterDAO Hub"
+          content="Share a new post | WaterLab Hub"
           key="og_title"
         />
 
         {/** Description */}
         <meta
           name="description"
-          content="Discuss the future of WaterDAO"
+          content="Discuss the future of WaterLab"
           key="description"
         ></meta>
         <meta
           property="og:description"
-          content="Discuss the future of WaterDAO"
+          content="Discuss the future of WaterLab"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />
@@ -52,7 +52,7 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Sharing a new post on the WaterDAO Hub"
+                title="Sharing a new post on the WaterLab Hub"
                 description="You are about to share a new post. Make sure to read our rules before doing so."
                 image
               />

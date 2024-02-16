@@ -100,22 +100,22 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">View Attestations | WaterDAO Hub</title>
+        <title key="title">View Attestations | WaterLab Hub</title>
         <meta
           property="og:title"
-          content="View Attestations | WaterDAO Hub"
+          content="View Attestations | WaterLab Hub"
           key="og_title"
         />
 
         {/** Description */}
         <meta
           name="description"
-          content="Discuss the future of WaterDAO"
+          content="Discuss the future of WaterLab"
           key="description"
         ></meta>
         <meta
           property="og:description"
-          content="Discuss the future of WaterDAO"
+          content="Discuss the future of WaterLab"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />

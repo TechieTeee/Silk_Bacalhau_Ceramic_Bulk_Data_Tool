@@ -49,7 +49,7 @@ function Footer() {
                 <Link
                   className="flex justify-center items-center text-brand text-brand-hover"
                   target="_blank"
-                  href="https://github.com/BanklessDeSci">
+                  href="https://github.com/_waterdao">
                   <GithubIcon />
                 </Link>
               </li>

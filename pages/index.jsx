@@ -118,22 +118,22 @@ function Home({ defaultPosts }) {
     <>
       <Head>
         {/** Title */}
-        <title key="title">WaterLab | WaterDAO</title>
+        <title key="title">WaterLab | WaterLab</title>
         <meta
           property="og:title"
-          content="WaterDAO Community Hub | WaterLab"
+          content="WaterLab Community Hub | WaterLab"
           key="og_title"
         />
 
         {/** Description */}
         <meta
           name="description"
-          content="An open and decentralized social application for the WaterDAO community"
+          content="An open and decentralized social application for the WaterLab community"
           key="description"
         ></meta>
         <meta
           property="og:description"
-          content="An open and decentralized social application for the WaterDAO community"
+          content="An open and decentralized social application for the WaterLab community"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />
@@ -148,7 +148,7 @@ function Home({ defaultPosts }) {
 
               {/* Hero section with main title and description */}
               <Hero
-                title="WaterDAO Community Hub"
+                title="WaterLab Community Hub"
                 description="A decentralized research community"
               />
 

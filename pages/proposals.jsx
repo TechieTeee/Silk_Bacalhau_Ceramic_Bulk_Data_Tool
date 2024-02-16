@@ -267,10 +267,10 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">Create a New Proposal | WaterDAO </title>
+        <title key="title">Create a New Proposal | WaterLab </title>
         <meta
           property="og:title"
-          content="Create a New Proposal | WaterDAO Hub"
+          content="Create a New Proposal | WaterLab Hub"
           key="og_title"
         />
 
@@ -295,7 +295,7 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Create a New Proposal on the WaterDAO Hub"
+                title="Create a New Proposal on the WaterLab Hub"
                 description="You are about to share a new proposal. Make sure to read our rules before doing so."
                 image
               />
