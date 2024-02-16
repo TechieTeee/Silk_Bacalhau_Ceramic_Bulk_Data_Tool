@@ -42,7 +42,7 @@ html {
   --brand-color-reverse: #ffffff;
   --brand-color-hover: #07DCFF;
 
-  --brand-color-400: #003FA8;
+  --brand-color-400: #005FFF;
   --brand-color-400-reverse: #fff;
 
 
@@ -52,7 +52,7 @@ html {
   --border-primary: #4F4F4F;
   --border-secondary: #F2F2F2;
   --border-tertary: #020617;
-  --brand-blue: #005FFF;
+  --brand-blue: #003FA8;
   /***/
 
 }
