@@ -119,7 +119,7 @@ async function onCompleteProposal(survey) {
     const blockNumberSnapshot = 13620822;
 
     const receipt = await client.proposal(web3, account, {
-      space: 'verifiedtalent.eth', // TODO: Replace with your space name
+      space: 'rh2o.eth', // TODO: Replace with your space name
       type,
       title,
       body,
@@ -129,7 +129,7 @@ async function onCompleteProposal(survey) {
       snapshot: blockNumberSnapshot,
       network: '1',
       plugins: JSON.stringify({}),
-      app: 'my-app' // TODO: Replace with the name of your project which is using this snapshot.js integration
+      app: 'WaterLab' // TODO: Replace with the name of your project which is using this snapshot.js integration
     });
 
     console.log('receipt', receipt)
@@ -217,7 +217,7 @@ const Proposals = () => {
                 
                 // TODO: Likely, these values will come from user input
                 const choice = 0 // Replace with the choice index
-                const space = 'verifiedtalent.eth'; // TODO: Replace with your space name
+                const space = 'rh2o.eth'; // TODO: Replace with your space name
 
                 const receipt = await client.vote(web3, account, {
                   proposal: proposal.id,
@@ -225,7 +225,7 @@ const Proposals = () => {
                   space,
                   network: '1',
                   plugins: JSON.stringify({}),
-                  app: 'my-app' // TODO: Replace with the name of your project which is using this snapshot.js integration
+                  app: 'WaterLab' // TODO: Replace with the name of your project which is using this snapshot.js integration
                 });
 
                 console.log('receipt', receipt)

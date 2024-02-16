@@ -116,7 +116,7 @@ export default function Create() {
       const end = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 5; // End 5 days from now
       const blockNumberSnapshot = 13620822;
       const prop = {
-        space: "verifiedtalent.eth", // TODO: Replace with your space name
+        space: "rh2o.eth", // TODO: Replace with your space name
         type,
         title,
         body,
@@ -126,12 +126,12 @@ export default function Create() {
         snapshot: blockNumberSnapshot,
         network: "1",
         plugins: JSON.stringify({}),
-        app: "my-app", // TODO: Replace with the name of your project which is using this snapshot.js integration
+        app: "WaterLab", // TODO: Replace with the name of your project which is using this snapshot.js integration
       };
       console.log("prop", prop);
 
       const receipt = await client.proposal(web3, account, {
-        space: "verifiedtalent.eth", // TODO: Replace with your space name
+        space: "rh2o.eth", // TODO: Replace with your space name
         type,
         title,
         body,
@@ -141,7 +141,7 @@ export default function Create() {
         snapshot: blockNumberSnapshot,
         network: "1",
         plugins: JSON.stringify({}),
-        app: "my-app", // TODO: Replace with the name of your project which is using this snapshot.js integration
+        app: "WaterLab", // TODO: Replace with the name of your project which is using this snapshot.js integration
       });
 
       console.log("receipt", receipt);
@@ -175,7 +175,7 @@ export default function Create() {
       const client = new snapshot.Client712(hub);
 
       const prop = {
-        space: "verifiedtalent.eth",
+        space: "rh2o.eth",
         proposal,
         type: "single-choice",
         choice: 1,
@@ -493,7 +493,7 @@ export default function Create() {
                                 className="btn-sm py-1.5 btn-brand"
                                 onClick={async () => {
                                   // window.open(
-                                  //   `https://snapshot.org/#/verifiedtalent.eth/proposal/${proposal.id}`
+                                  //   `https://snapshot.org/#/rh2o.eth/proposal/${proposal.id}`
                                   // );
                                   await getProposal(proposal.id);
                                 }}

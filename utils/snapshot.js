@@ -1,6 +1,6 @@
 export function getActiveProposals() {
   const apiUrl = "https://hub.snapshot.org/graphql";
-  const space = "verifiedtalent.eth";
+  const space = "rh2o.eth";
 
   const query = `
     {
@@ -41,7 +41,7 @@ export function getActiveProposals() {
 
 export function getSingleProposal(id) {
   const apiUrl = "https://hub.snapshot.org/graphql";
-  const space = "verifiedtalent.eth";
+  const space = "rh2o.eth";
 
   const query = `
   query {
