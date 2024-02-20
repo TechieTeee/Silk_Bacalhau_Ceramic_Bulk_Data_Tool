@@ -260,13 +260,13 @@ const AttestEditor = ({ context }) => {
               <p className="text-base text-secondary mb-2">
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
                 You can't create attestations yet. Click the button below and
-                create a unique identity using your phone number to get started.
+                create a unique identity using your phone number to become a verified user.
               </p>
               <button
                 className="btn-sm py-1.5 btn-brand"
-                onClick={() => window.open("https://app.holonym.id/issuance")}
+                onClick={() => window.open("https://silksecure.net/holonym/silk")}
               >
-                Visit Holonym
+                Visit Silk by Holonym
               </button>
             </div>
           )}
