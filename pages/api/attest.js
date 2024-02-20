@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   //instantiate a composeDB client instance
   const composeClient = new ComposeClient({
-    ceramic: "hhttps://ceramic-arcanumsci-mainnet.hirenodes.io/",
+    ceramic: "https://ceramic-arcanumsci-mainnet.hirenodes.io/",
     definition,
   });
 
