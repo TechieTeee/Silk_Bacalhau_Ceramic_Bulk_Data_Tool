@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import Head from "next/head";
 import Editor from "../components/Editor";
-import AttestEditor from "../components/AttestEdit";
+import Person from "../components/User";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
@@ -13,9 +13,6 @@ export default function Create() {
   const [create, setCreate] = useState(false);
 
   useEffect(() => {
-    if(global.orbis_context){
-      console.log(global.orbis_context);
-    }
     if (user) {
     }
   }, []);
@@ -24,24 +21,14 @@ export default function Create() {
     <>
       <Head>
         {/** Title */}
-        <title key="title">Share a new post | WaterDO Hub</title>
+        <title key="title">View your attestations | WaterLab Hub</title>
         <meta
           property="og:title"
-          content="Share a new post | WaterLab Hub"
+          content="View Attestations | WaterLab Hub"
           key="og_title"
         />
 
         {/** Description */}
-        <meta
-          name="description"
-          content="Discuss the future of WaterLab"
-          key="description"
-        ></meta>
-        <meta
-          property="og:description"
-          content="Discuss the future of WaterLab"
-          key="og_description"
-        />
         <link rel="icon" href="/favicon.png" />
       </Head>
       <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-main">
@@ -52,8 +39,8 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Sharing a new post on the WaterLab Hub"
-                description="You are about to share a new post. Make sure to read our rules before doing so."
+                title="View Attestations You've Created or Recieved"
+                description=""
                 image
               />
 
@@ -65,30 +52,7 @@ export default function Create() {
                     <div className="md:grow pt-0 pb-12 pr-10">
                       {user ? (
                         <>
-                          
-                          {create ? (
-                            <>
-                            <AttestEditor context={global.orbis_context}/>
-                            <button
-                                className="btn-sm py-1.5 btn-secondary mt-3"
-                                onClick={() => setCreate(false)}
-                              >
-                                Back
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                            <Editor />
-                            <div className="w-full text-center bg-slate-50 rounded border border-primary bg-stone-300	 p-6">
-                              <button
-                                className="btn-sm py-1.5 btn-secondary"
-                                onClick={() => setCreate(true)}
-                              >
-                                Create an Attestation
-                              </button>
-                            </div>
-                            </>
-                          )}
+                          <Person />
                         </>
                       ) : (
                         <div className="w-full text-center bg-slate-50 rounded border border-primary bg-secondary p-6">
@@ -104,7 +68,6 @@ export default function Create() {
                         </div>
                       )}
                     </div>
-                    <Sidebar />
                   </div>
                 </div>
               </section>

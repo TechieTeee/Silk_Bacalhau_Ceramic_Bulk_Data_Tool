@@ -35,14 +35,14 @@
 
 html {
   /** Colors */
-  --bg-color: #000000;
-  --bg-secondary: #7E4343;
+  --bg-color: #003FA8;
+  --bg-secondary: #c2bda6cd;
 
-  --brand-color: #D02128;
+  --brand-color: #005FFF;
   --brand-color-reverse: #ffffff;
-  --brand-color-hover: #ffffff;
+  --brand-color-hover: #07DCFF;
 
-  --brand-color-400: #D02128;
+  --brand-color-400: #003FA8;
   --brand-color-400-reverse: #fff;
 
 
@@ -52,7 +52,7 @@ html {
   --border-primary: #4F4F4F;
   --border-secondary: #F2F2F2;
   --border-tertary: #020617;
-  --brand-blue: #FF000A;
+  --brand-blue: #005FFF;
   /***/
 
 }

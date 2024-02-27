@@ -12,7 +12,7 @@ export default function Upvote({like, active, count}) {
     return(
       <div className="rounded-md border text-primary border-primary hover-border-secondary p-4 py-2 mr-4 cursor-pointer flex-col" onClick={() => like()}>
         <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.840461 10.7C0.210749 11.6989 0.928568 13 2.10935 13L13.8905 13C15.0713 13 15.7891 11.6989 15.1594 10.7L9.26881 1.35638C8.68036 0.422985 7.31948 0.422987 6.73103 1.35638L0.840461 10.7Z" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/>
+          <path d="M0.840461 10.7C0.210749 11.6989 0.928568 13 2.10935 13L13.8905 13C15.0713 13 15.7891 11.6989 15.1594 10.7L9.26881 1.35638C8.68036 0.422985 7.31948 0.422987 6.73103 1.35638L0.840461 10.7Z" stroke="currentColor" strokeWidth="0.5" strokeLinejoin="round"/>
         </svg>
         <div className="font-medium text-center mt-1">{count}</div>
       </div>

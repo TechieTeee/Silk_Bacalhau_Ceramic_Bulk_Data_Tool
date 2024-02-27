@@ -3,15 +3,47 @@ import Link from 'next/link';
 import { Logo, PanelRight, SearchIcon, MenuVerticalIcon, LoadingCircle, PassportLogo, PassportLogoWhite } from "./Icons";
 import useOutsideClick from "../hooks/useOutsideClick";
 import { useOrbis, User, UserPopup, Chat, Post } from "@orbisclub/components";
+import { initSilk } from '@silk-wallet/silk-wallet-sdk';
 import { getTimestamp } from "../utils";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { getPassport } from "../utils/passport";
 
 function Header() {
-  const { orbis, user, connecting, setConnectModalVis } = useOrbis();
+  const { orbis, user, setUser, connecting, setConnectModalVis } = useOrbis();
   const [showCommunityChat, setShowCommunityChat] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+
+  const [silkProvider, setSilkProvider] = useState(null);
+
+  useEffect(() => {
+    const silk = initSilk()
+    setSilkProvider(silk)
+  }, [])
+
+  async function onClickConnect() {
+    try {
+      const selectedWallet = await silkProvider.loginSelector()
+
+      if (selectedWallet === 'silk') {
+        const result = await orbis.connect_v2({
+          provider: silkProvider,
+        })
+        setUser(result?.details)
+      } else if (selectedWallet === 'injected') {
+        const result = await orbis.connect_v2({
+          provider: window.ethereum,
+        })
+        setUser(result?.details)
+      } else if (selectedWallet === 'walletconnect') {
+        // TODO...
+        // See https://docs.useorbis.com/sdk/methods/connection/connect_v2
+      }
+    } catch (err) {
+      console.error('Connect error:', err)
+    }
+  }
+
 
   useEffect(() => {
     getLastTimeRead();
@@ -87,7 +119,7 @@ function Header() {
                     {connecting ?
                       <div className="btn-sm btn-main w-full" onClick={() => setConnectModalVis(true)}><LoadingCircle style={{marginRight: 3}} /> Connecting</div>
                     :
-                      <div className="btn-sm btn-main w-full" onClick={() => setConnectModalVis(true)}>Connect</div>
+                    <div className="btn-sm btn-main w-full" onClick={onClickConnect}>Connect</div>
                     }
 
                   </li>
@@ -256,7 +288,7 @@ const NotificationItem = ({notification}) => {
       case "like":
         return(
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-brand">
-            <path d="M13.875 4.84375C13.875 3.08334 12.3884 1.65625 10.5547 1.65625C9.18362 1.65625 8.00666 2.45403 7.5 3.59242C6.99334 2.45403 5.81638 1.65625 4.44531 1.65625C2.61155 1.65625 1.125 3.08334 1.125 4.84375C1.125 9.95831 7.5 13.3438 7.5 13.3438C7.5 13.3438 13.875 9.95831 13.875 4.84375Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.875 4.84375C13.875 3.08334 12.3884 1.65625 10.5547 1.65625C9.18362 1.65625 8.00666 2.45403 7.5 3.59242C6.99334 2.45403 5.81638 1.65625 4.44531 1.65625C2.61155 1.65625 1.125 3.08334 1.125 4.84375C1.125 9.95831 7.5 13.3438 7.5 13.3438C7.5 13.3438 13.875 9.95831 13.875 4.84375Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         )
       case "haha":
