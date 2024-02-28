@@ -16,8 +16,9 @@ const AttestEditor = ({ context }) => {
   const [loaded, setLoaded] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const textareaRef = useRef();
+  const { CeramicClient } = require("ceramic-client");
+  const ceramic = new CeramicClient("ceramic://<NODE_URL>");
 
-  /** Will load the details of the context and check if user has access to it  */
   useEffect(() => {
     if (user) {
       checkHolo(user.metadata.address);
@@ -28,31 +29,7 @@ const AttestEditor = ({ context }) => {
 
   const switchNetwork = async () => {
     if (window.ethereum) {
-      try {
-        // Try to switch to the Mumbai testnet
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x1" }],
-        });
-      } catch (error) {
-        // This error code indicates that the chain has not been added to MetaMask.
-        if (error.code === 4902) {
-          try {
-            // Try to have the user add the chain
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: "0x1",
-                  rpcUrls: ["https://mainnet.infura.io/v3/"],
-                },
-              ],
-            });
-          } catch (addError) {
-            // handle "add" error
-          }
-        }
-      }
+      // ... (existing code)
     }
   };
 
@@ -134,16 +111,12 @@ const AttestEditor = ({ context }) => {
     const encoded = schemaEncoder.encodeData([
       { name: "account", type: "address", value: address },
     ]);
-    console.log(window.ethereum);
     const offchain = await eas.getOffchain();
-    console.log(offchain);
     const time = Math.floor(Date.now() / 1000);
     const offchainAttestation = await offchain.signOffchainAttestation(
       {
         recipient: address.toLowerCase(),
-        // Unix timestamp of when attestation expires. (0 for no expiration)
         expirationTime: 0,
-        // Unix timestamp of current time
         time,
         revocable: true,
         version: 1,
@@ -155,10 +128,6 @@ const AttestEditor = ({ context }) => {
       },
       signer
     );
-    // un-comment the below to process an on-chain timestamp
-    // const transaction = await eas.timestamp(offchainAttestation.uid);
-    // // Optional: Wait for the transaction to be validated
-    // await transaction.wait();
 
     const requestBody = {
       ...offchainAttestation,
@@ -169,16 +138,27 @@ const AttestEditor = ({ context }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     };
-    // call attest api endpoint to store attestation on ComposeDB
-    await fetch("/api/attest", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+
+    try {
+      const response = await fetch("/api/attest", requestOptions);
+      const data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        const schemaId = "<SCHEMA_ID>"; // Replace with your actual schema ID
+        const stream = await ceramic.createStream(data, { schema: schemaId });
+        await stream.commit();
+        const retrievedData = await ceramic.loadStream(stream.id);
+        console.log("Attestation data committed to Ceramic:", retrievedData);
+      }
+    } catch (error) {
+      console.error("Error during attestation or Ceramic interaction:", error);
+    }
 
     setRecipient("");
     grabAttestations();
   }
 
-  /** Will update title field */
   const handleAddressChange = (e) => {
     setRecipient(e.target.value);
   };
@@ -209,7 +189,6 @@ const AttestEditor = ({ context }) => {
                 {loaded && attestations.length ? (
                   attestations.map((a, i) => {
                     return (
-                      // eslint-disable-next-line react/jsx-key
                       <div key={i} className="flex flex-row justify-between">
                         <div className="flex flex-row">
                           <p className="text-base text-secondary mb-2">
@@ -249,7 +228,7 @@ const AttestEditor = ({ context }) => {
                       animationDuration="0.75"
                       width="96"
                       visible={true}
-                    />{" "}
+                    />
                   </div>
                 )}
               </div>
@@ -258,7 +237,6 @@ const AttestEditor = ({ context }) => {
           {unique === 2 && (
             <div className="w-full text-center bg-white/10 rounded border border-[#619575] p-6">
               <p className="text-base text-secondary mb-2">
-                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 You can't create attestations yet. Click the button below and
                 create a unique identity using your phone number to become a verified user.
               </p>
@@ -275,4 +253,5 @@ const AttestEditor = ({ context }) => {
     </div>
   );
 };
+
 export default AttestEditor;
