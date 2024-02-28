@@ -17,6 +17,7 @@ composedb.config.json
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 .env
+*.env
 
 # Runtime data
 pids
