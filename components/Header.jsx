@@ -15,6 +15,7 @@ function Header() {
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
 
   const [silkProvider, setSilkProvider] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     const silk = initSilk()
@@ -23,9 +24,13 @@ function Header() {
 
   async function onClickConnect() {
     try {
-      const selectedWallet = await silkProvider.loginSelector()
+      let selectedWallet = 'silk'
+      if (!isLoggedIn) {
+        selectedWallet = await silkProvider.loginSelector()
+      }
 
       if (selectedWallet === 'silk') {
+        setIsLoggedIn(true)
         const result = await orbis.connect_v2({
           provider: silkProvider,
         })
