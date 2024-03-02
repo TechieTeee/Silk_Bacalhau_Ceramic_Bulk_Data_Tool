@@ -118,10 +118,10 @@ function Home({ defaultPosts }) {
     <>
       <Head>
         {/** Title */}
-        <title key="title">WaterLab | WaterLab</title>
+        <title key="title">Water is Life</title>
         <meta
           property="og:title"
-          content="WaterLab Community Hub | WaterLab"
+          content="Water is Life | Desci Citzen Water Qualituy Management"
           key="og_title"
         />
 
@@ -133,7 +133,7 @@ function Home({ defaultPosts }) {
         ></meta>
         <meta
           property="og:description"
-          content="An open and decentralized social application for the WaterLab community"
+          content="An Desci Citizen Project to Promote Water Quality"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />
@@ -148,8 +148,8 @@ function Home({ defaultPosts }) {
 
               {/* Hero section with main title and description */}
               <Hero
-                title="WaterLab Community Hub"
-                description="A decentralized research community"
+                title="Water is Life"
+                description="A decentralized research community to promote access to quality water"
               />
 
               {/* Page content */}
