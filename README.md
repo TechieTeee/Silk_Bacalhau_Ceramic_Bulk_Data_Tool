@@ -1,5 +1,7 @@
 ![Water_Life_Hero_Image](https://github.com/TechieTeee/Silk_Bacalhau_Ceramic_Bulk_Data_Tool/assets/100870737/872142fc-64a8-4930-9432-9efac51a592a)
 
+![Water_Life_Hero_Image](https://github.com/TechieTeee/Water_is_Life/assets/100870737/b203e896-1f16-408d-9d54-f9a8fcf492a4)
+
 ## Project Description
 The Water is Life Project is a groundbreaking initiative that combines blockchain technology, decentralized identity, and automated data processing to address the urgent global challenge of water quality. In collaboration with citizen scientists worldwide, this project aims to make a tangible impact on improving water quality for children, ultimately saving lives.
 
