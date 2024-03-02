@@ -9,7 +9,7 @@ import { RotatingLines } from "react-loader-spinner";
 import { initSilk } from "@silk-wallet/silk-wallet-sdk";
 import { Alchemy, Network } from "alchemy-sdk";
 import { env } from "../env.mjs";
-import { CeramicClient } from "@ceramicnetwork/http-client";
+import { exec } from "child_process";
 
 const { NEXT_PUBLIC_ALCHEMY_API_KEY } = env;
 
@@ -28,9 +28,7 @@ const AttestEditor = ({ context }) => {
   };
   const alchemy = new Alchemy(config);
 
-  const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
-
-  /** Will load the details of the context and check if the user has access to it  */
+  /** Will load the details of the context and check if the user has access to it */
   useEffect(() => {
     if (user) {
       checkHolo(user.metadata.address);
@@ -95,14 +93,19 @@ const AttestEditor = ({ context }) => {
       requestOptions
     ).then((response) => response.json());
     if (gotAttestations.data.accountAttestationIndex === null) {
-      console.log(gotAttestations.data);
+      console.log(
+        gotAttestations.data
+      );
       return;
     }
-    console.log(gotAttestations.data.accountAttestationIndex.edges.length);
+    console.log(
+      gotAttestations.data.accountAttestationIndex.edges.length
+    );
     const arr = [];
     for (
       let i = 0;
-      i < gotAttestations.data.accountAttestationIndex.edges.length;
+      i <
+      gotAttestations.data.accountAttestationIndex.edges.length;
       i++
     ) {
       const obj = {
@@ -112,9 +115,11 @@ const AttestEditor = ({ context }) => {
             ? true
             : false,
         attester:
-          gotAttestations.data.accountAttestationIndex.edges[i].node.attester,
+          gotAttestations.data.accountAttestationIndex.edges[i].node
+            .attester,
         recipient:
-          gotAttestations.data.accountAttestationIndex.edges[i].node.recipient,
+          gotAttestations.data.accountAttestationIndex.edges[i].node
+            .recipient,
         id: gotAttestations.data.accountAttestationIndex.edges[i].node.id,
       };
 
@@ -125,7 +130,9 @@ const AttestEditor = ({ context }) => {
   }
 
   async function attest(address) {
-    const network = await ethereum.request({ method: "eth_chainId" });
+    const network = await ethereum.request({
+      method: "eth_chainId",
+    });
     if (network !== "0x1") {
       await switchNetwork();
     }
@@ -144,23 +151,35 @@ const AttestEditor = ({ context }) => {
         return;
       }
     }
-    if (address.toLowerCase() === user.metadata.address.toLowerCase()) {
+    if (
+      address.toLowerCase() === user.metadata.address.toLowerCase()
+    ) {
       alert("You cannot attest to yourself");
       setRecipient("");
       return;
     }
+    const silk = initSilk();
+    window.ethereum = silk;
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum
+    );
+    const signer = provider.getSigner();
+    eas.connect(signer);
 
     const schemaEncoder = new SchemaEncoder("address account");
     const encoded = schemaEncoder.encodeData([
       { name: "account", type: "address", value: address },
     ]);
-
+    console.log(window.ethereum);
     const offchain = await eas.getOffchain();
+    console.log(offchain);
     const time = Math.floor(Date.now() / 1000);
     const offchainAttestation = await offchain.signOffchainAttestation(
       {
         recipient: address.toLowerCase(),
+        // Unix timestamp of when attestation expires. (0 for no expiration)
         expirationTime: 0,
+        // Unix timestamp of current time
         time,
         revocable: true,
         version: 1,
@@ -182,24 +201,41 @@ const AttestEditor = ({ context }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     };
+    // Call attest API endpoint to store attestation on ComposeDB
+    await fetch("/api/attest", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
 
-    // Call attest API endpoint to store attestation on CeramicDB
-    await ceramic.createDocument("tile", {
-      content: {
-        ...offchainAttestation,
-        account: user.metadata.address.toLowerCase(),
-      },
-    });
-
-    // You may need to handle the response from the Ceramic createDocument method
-    // to ensure the document has been created successfully.
+        // Run terminal command after attestation is complete
+        runTerminalCommand();
+      });
 
     setRecipient("");
     grabAttestations();
   }
 
+  /** Will update title field */
   const handleAddressChange = (e) => {
     setRecipient(e.target.value);
+  };
+
+  /** Run terminal command */
+  const runTerminalCommand = () => {
+    // Docker command to create Bacalhau job with the uploaded asset
+    // Post attestation and record uplaod to ComposeDB
+    const terminalCommand =
+      'docker run -t ghcr.io/bacalhau-project/bacalhau:latest docker run --id-only --wait ubuntu:latest -- sh -c "uname -a && echo \\"Thank you for making clean water possible and being part of the Water is Life Community\\" "';
+
+    // Run the terminal command
+    exec(terminalCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+    });
   };
 
   return (
@@ -228,13 +264,16 @@ const AttestEditor = ({ context }) => {
                 {loaded && attestations.length ? (
                   attestations.map((a, i) => {
                     return (
+                      // eslint-disable-next-line react/jsx-key
                       <div key={i} className="flex flex-row justify-between">
                         <div className="flex flex-row">
                           <p className="text-base text-secondary mb-2">
                             {shortAddress(a.attester)}&nbsp;
                           </p>
                           <p className="text-base text-secondary mb-2">
-                            {a.given ? "gave to " : "received from "}&nbsp;
+                            {a.given
+                              ? "gave to "
+                              : "received from "}&nbsp;
                           </p>
                           <p className="text-base text-secondary mb-2">
                             {shortAddress(a.recipient)}
@@ -243,7 +282,7 @@ const AttestEditor = ({ context }) => {
                         <div className="flex flex-row">
                           <p className="text-base text-secondary mb-2 text-right">
                             <a
-                              href={`https://ceramic-clay.3boxlabs.com/${a.id}`}
+                              href={`https://ceramic-arcanumsci-mainnet.hirenodes.io/api/v0/streams/${a.id}`}
                               target="_blank"
                               rel="noreferrer"
                               className="text-blue-500"
@@ -260,14 +299,19 @@ const AttestEditor = ({ context }) => {
                     No attestations yet
                   </p>
                 ) : (
-                  <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <RotatingLines
                       strokeColor="grey"
                       strokeWidth="5"
                       animationDuration="0.75"
                       width="96"
                       visible={true}
-                    />
+                    />{" "}
                   </div>
                 )}
               </div>
@@ -276,6 +320,7 @@ const AttestEditor = ({ context }) => {
           {unique === 2 && (
             <div className="w-full text-center bg-white/10 rounded border border-[#619575] p-6">
               <p className="text-base text-secondary mb-2">
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 You can't create attestations yet. Click the button below and
                 create a unique identity using your phone number to become a
                 verified user.
@@ -283,7 +328,9 @@ const AttestEditor = ({ context }) => {
               <button
                 className="btn-sm py-1.5 btn-brand"
                 onClick={() =>
-                  window.open("https://silksecure.net/holonym/silk")
+                  window.open(
+                    "https://silksecure.net/holonym/silk"
+                  )
                 }
               >
                 Visit Silk by Holonym
