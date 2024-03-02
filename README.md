@@ -19,7 +19,7 @@ Water Quality Improvement Initiative: The Water is Life Project directly address
 Citizen Scientists Decentralized Group: For this project, the vision is a decentralized group of citizen scientists collaborating to improve water quality. The project empowers individuals worldwide to contribute to a shared goal, facilitated by on-chain attestations and an embeddable Silk Wallet. This would allow the citizen scientists without formal data science and/or data engineering training to easily and quickly validate data, and minimize tech support staff for their work.
 
 ## Technical Impact
-On-Chain Attestations with ComposeDB: Demonstrating the technical capability of EAS and ComposeDB, the project securely stores attestation data on the blockchain. This establishes a robust foundation for building trust in identity-related transactions within the decentralized community.
+On-Chain Attestations with ComposeDB: Demonstrating the technical capability of EAS and ComposeDB, the project securely stores attestation data on the blockchain. This establishes a robust foundation for building trust in identity-related transactions within the decentralized community, and how ETL and attestation with EAS + Silk can be used for many use cases, including social impact.
 
 Automated Data Processing with Bacalhau: The integration of Bacalhau showcases the commitment to technical innovation. This Batch Data Tool automates the processing of water quality data, ensuring efficiency, accuracy, and scalability in the mission to improve global water quality.
 
