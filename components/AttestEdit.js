@@ -8,9 +8,10 @@ import { shortAddress } from "../utils";
 import { RotatingLines } from "react-loader-spinner";
 import { initSilk } from "@silk-wallet/silk-wallet-sdk";
 import { Alchemy, Network } from "alchemy-sdk";
-import {env} from "../env.mjs"
+import { env } from "../env.mjs";
+import { CeramicClient } from "@ceramicnetwork/http-client";
 
-const {NEXT_PUBLIC_ALCHEMY_API_KEY} = env;
+const { NEXT_PUBLIC_ALCHEMY_API_KEY } = env;
 
 const AttestEditor = ({ context }) => {
   const eas = new EAS(EASContractAddress);
@@ -27,8 +28,9 @@ const AttestEditor = ({ context }) => {
   };
   const alchemy = new Alchemy(config);
 
+  const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
 
-  /** Will load the details of the context and check if user has access to it  */
+  /** Will load the details of the context and check if the user has access to it  */
   useEffect(() => {
     if (user) {
       checkHolo(user.metadata.address);
@@ -132,13 +134,13 @@ const AttestEditor = ({ context }) => {
       setRecipient("");
       return;
     }
-    if(address.includes('.eth')){
-      if(NEXT_PUBLIC_ALCHEMY_API_KEY){
-        const resolved = await alchemy.core.resolveName(address)
+    if (address.includes(".eth")) {
+      if (NEXT_PUBLIC_ALCHEMY_API_KEY) {
+        const resolved = await alchemy.core.resolveName(address);
         address = resolved;
       } else {
-        alert("ENS names not yet supported")
-        setRecipient("")
+        alert("ENS names not yet supported");
+        setRecipient("");
         return;
       }
     }
@@ -147,26 +149,18 @@ const AttestEditor = ({ context }) => {
       setRecipient("");
       return;
     }
-    const silk = initSilk()
-    window.ethereum = silk
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    eas.connect(signer);
 
     const schemaEncoder = new SchemaEncoder("address account");
     const encoded = schemaEncoder.encodeData([
       { name: "account", type: "address", value: address },
     ]);
-    console.log(window.ethereum);
+
     const offchain = await eas.getOffchain();
-    console.log(offchain);
     const time = Math.floor(Date.now() / 1000);
     const offchainAttestation = await offchain.signOffchainAttestation(
       {
         recipient: address.toLowerCase(),
-        // Unix timestamp of when attestation expires. (0 for no expiration)
         expirationTime: 0,
-        // Unix timestamp of current time
         time,
         revocable: true,
         version: 1,
@@ -178,10 +172,6 @@ const AttestEditor = ({ context }) => {
       },
       signer
     );
-    // un-comment the below to process an on-chain timestamp
-    // const transaction = await eas.timestamp(offchainAttestation.uid);
-    // // Optional: Wait for the transaction to be validated
-    // await transaction.wait();
 
     const requestBody = {
       ...offchainAttestation,
@@ -192,16 +182,22 @@ const AttestEditor = ({ context }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     };
-    // call attest api endpoint to store attestation on ComposeDB
-    await fetch("/api/attest", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+
+    // Call attest API endpoint to store attestation on CeramicDB
+    await ceramic.createDocument("tile", {
+      content: {
+        ...offchainAttestation,
+        account: user.metadata.address.toLowerCase(),
+      },
+    });
+
+    // You may need to handle the response from the Ceramic createDocument method
+    // to ensure the document has been created successfully.
 
     setRecipient("");
     grabAttestations();
   }
 
-  /** Will update title field */
   const handleAddressChange = (e) => {
     setRecipient(e.target.value);
   };
@@ -232,7 +228,6 @@ const AttestEditor = ({ context }) => {
                 {loaded && attestations.length ? (
                   attestations.map((a, i) => {
                     return (
-                      // eslint-disable-next-line react/jsx-key
                       <div key={i} className="flex flex-row justify-between">
                         <div className="flex flex-row">
                           <p className="text-base text-secondary mb-2">
@@ -248,7 +243,7 @@ const AttestEditor = ({ context }) => {
                         <div className="flex flex-row">
                           <p className="text-base text-secondary mb-2 text-right">
                             <a
-                              href={`https://ceramic-arcanumsci-mainnet.hirenodes.io/api/v0/streams/${a.id}`}
+                              href={`https://ceramic-clay.3boxlabs.com/${a.id}`}
                               target="_blank"
                               rel="noreferrer"
                               className="text-blue-500"
@@ -272,7 +267,7 @@ const AttestEditor = ({ context }) => {
                       animationDuration="0.75"
                       width="96"
                       visible={true}
-                    />{" "}
+                    />
                   </div>
                 )}
               </div>
@@ -281,7 +276,6 @@ const AttestEditor = ({ context }) => {
           {unique === 2 && (
             <div className="w-full text-center bg-white/10 rounded border border-[#619575] p-6">
               <p className="text-base text-secondary mb-2">
-                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 You can't create attestations yet. Click the button below and
                 create a unique identity using your phone number to become a
                 verified user.
@@ -301,4 +295,5 @@ const AttestEditor = ({ context }) => {
     </div>
   );
 };
+
 export default AttestEditor;

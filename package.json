@@ -16,10 +16,12 @@
   },
   "dependencies": {
     "20": "^3.1.9",
+    "@3id/connect": "^0.4.1",
     "@ceramicnetwork/blockchain-utils-linking": "^3.2.0",
     "@ceramicnetwork/cli": "^3.2.0",
     "@ceramicnetwork/common": "^3.2.0",
-    "@ceramicnetwork/http-client": "^3.2.0",
+    "@ceramicnetwork/http-client": "^3.4.1",
+    "@ceramicstudio/idx": "^0.12.2",
     "@composedb/cli": "^0.6.0",
     "@composedb/client": "^0.6.0",
     "@didtools/cacao": "2.0.0",
