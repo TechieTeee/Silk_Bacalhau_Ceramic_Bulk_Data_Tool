@@ -10,7 +10,6 @@ The Water is Life Project is a groundbreaking initiative that combines blockchai
 - ComposeDB + Ceramic: Our choice of ComposeDB ensures that attestation data remains secure, tamper-proof, and readily accessible on the blockchain. This decentralized database forms the backbone of our trust network.
 
 - Bacalhau: Bacalhau Batch is the heartbeat of the project, which allows for automating data processing tasks. By integrating with the project, it streamlines the validation and processing of water quality data.
-- 
 - Languages: Pythob, JS, TS
 
 ## Social Impact
