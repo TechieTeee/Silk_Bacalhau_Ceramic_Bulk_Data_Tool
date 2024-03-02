@@ -52,7 +52,7 @@ export default function Create() {
               {/*  Site header */}
               <Header />
               <Hero
-                title="Sharing a new post on the WaterLab Hub"
+                title="Share Your Citizen Scientist Water Data and Experiences"
                 description="You are about to share a new post. Make sure to read our rules before doing so."
                 image
               />

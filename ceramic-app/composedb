@@ -1,0 +1,6 @@
+
+#!/usr/bin/env sh
+export DID_PRIVATE_KEY=5737ef9508eb4837de08446df3ec1dd02b9224f98df9d65113a61f253b766f00
+export CERAMIC_URL=http://127.0.0.1:7007
+
+node /workspace/Silk_Bacalhau_Ceramic_Bulk_Data_Tool/ceramic-app/node_modules/.bin/composedb "$@"
