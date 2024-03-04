@@ -9,11 +9,9 @@ The Water is Life Project is a groundbreaking initiative that combines blockchai
 ## Tools for Driving Impact
 - Silk Wallet: Silk Wallet is integrated to offer an embeddable and user-friendly wallet experience. This enhances the ease with which participants interact with Ethereum-based features, fostering a seamless and inclusive user experience.
 - Ethereum Attestation Service (EAS): EAS is leveraged for on-chain attestations, providing a robust mechanism to verify and validate user identities within the decentralized network.
-
 - ComposeDB + Ceramic: Our choice of ComposeDB ensures that attestation data remains secure, tamper-proof, and readily accessible on the blockchain. This decentralized database forms the backbone of our trust network.
-
 - Bacalhau: Bacalhau platform is the heartbeat of the project, which allows for automating data processing tasks. By integrating with the project, it streamlines the validation and processing of water quality data.
-- Languages: Pythob, JS, TS
+- Languages: Python, JS, TS
 - IPFS/Filecoin: Pinning objects
 
 ## Social Impact
