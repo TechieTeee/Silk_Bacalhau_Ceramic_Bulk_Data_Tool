@@ -16,7 +16,7 @@ const FileUpload = ({ onUpload }) => {
     // Handle the uploaded files here
     console.log("Accepted Files:", acceptedFiles);
 
-    // Implement your file upload logic, you can use the onUpload prop
+    // File upload logic with onUpload prop
     if (onUpload) {
       onUpload(acceptedFiles);
     }
