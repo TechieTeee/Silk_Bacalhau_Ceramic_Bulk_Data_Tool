@@ -22,6 +22,12 @@ On-Chain Attestations with ComposeDB: Demonstrating the technical capability of 
 
 Automated Data Processing with Bacalhau: The integration of Bacalhau showcases the commitment to technical innovation. This Batch Data Tool automates the processing of water quality data, ensuring efficiency, accuracy, and scalability in the mission to improve global water quality.
 
+## Website Screenshots
+![Water_is_Life_1](https://github.com/TechieTeee/Water_is_Life/assets/100870737/807ba5b5-9a91-4521-ac22-87a05782b125)
+![Water_is_Life_2](https://github.com/TechieTeee/Water_is_Life/assets/100870737/7f8bffb6-895f-4185-90dc-7c14582aef65)
+
+
+
 ## Getting Started (to be updated)
 
 To get started developers should start by creating their `project` and `context` using the [Orbis Dashboard](https://useorbis.com/dashboard). The ID of the context created should be used in `_app.js`.
