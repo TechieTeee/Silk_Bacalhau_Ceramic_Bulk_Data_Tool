@@ -107,7 +107,7 @@ function Home({ defaultPosts }) {
         // Parse CSV using papaparse
         Papa.parse(csvData, {
           complete: (result) => {
-            // If each CSV has a header row, result.data contains an array of objects
+            // CSV has a header row, result.data contains an array of objects
             const csvDataArray = result.data;
 
             // Each row is an object with columns as keys
@@ -143,22 +143,15 @@ function Home({ defaultPosts }) {
     const file = event.target.files[0];
     const data = await readDataFromCSV(file);
 
-    // Further processing can be added or storing can be done as needed
+    // Further processing and storage requirements can be added as needed
     console.log("Uploaded Data:", data);
-
-    // Example: Store data using CeramicDB or ComposeDB
-    const ceramicApiUrl = "http://localhost:7007";
   };
 
   return (
     <>
       <Head>
         <title key="title">WaterLab | WaterLab</title>
-        <meta
-          property="og:title"
-          content="WaterLab Community Hub | WaterLab"
-          key="og_title"
-        />
+        <meta property="og:title" content="WaterLab Community Hub | WaterLab" key="og_title" />
         <meta
           name="description"
           content="An open and decentralized social application for the WaterLab community"
@@ -176,21 +169,14 @@ function Home({ defaultPosts }) {
           <div className="min-h-screen flex">
             <main className="grow overflow-hidden">
               <Header />
-              <Hero
-                title="WaterLab Community Hub"
-                description="A decentralized research community"
-              />
+              <Hero title="WaterLab Community Hub" description="A decentralized research community" />
               <section>
                 {global.orbis_context ? (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6">
                     <div className="md:flex md:justify-between">
                       <div className="md:grow pt-3 pb-12 md:pb-20">
                         <div className="md:pr-6 lg:pr-10">
-                          <CategoriesNavigation
-                            categories={categories}
-                            nav={nav}
-                            setNav={setNav}
-                          />
+                          <CategoriesNavigation categories={categories} nav={nav} setNav={setNav} />
                           {loading ? (
                             <div className="flex w-full justify-center p-3 text-primary">
                               <LoadingCircle />
@@ -279,12 +265,6 @@ function Home({ defaultPosts }) {
         className="hidden"
         id="upload-data-input"
       />
-      <label
-        htmlFor="upload-data-input"
-        className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
-      >
-        Upload Data
-      </label>
     </>
   );
 }
