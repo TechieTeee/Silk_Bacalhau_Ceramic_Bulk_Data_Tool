@@ -27,7 +27,6 @@ Automated Data Processing with Bacalhau: The integration of Bacalhau showcases t
 ![Water_is_Life_2](https://github.com/TechieTeee/Water_is_Life/assets/100870737/7f8bffb6-895f-4185-90dc-7c14582aef65)
 
 
-
 ## Getting Started (to be updated)
 
 To get started developers should start by creating their `project` and `context` using the [Orbis Dashboard](https://useorbis.com/dashboard). The ID of the context created should be used in `_app.js`.
