@@ -139,12 +139,24 @@ function Home({ defaultPosts }) {
     });
   };
 
+  const storeDataInComposeDB = async (data) => {
+    // Send data to ComposeDB
+    const response = await fetch("/api/storeDataInComposeDB", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data }),
+    });
+
+    return response.json();
+  };
+
   const handleUploadButtonClick = async (event) => {
     const file = event.target.files[0];
     const data = await readDataFromCSV(file);
 
-    // Further processing and storage requirements can be added as needed
-    console.log("Uploaded Data:", data);
+    // Store data in ComposeDB
+    const storeResponse = await storeDataInComposeDB(data);
+    console.log("Data Storage Response:", storeResponse);
   };
 
   return (
