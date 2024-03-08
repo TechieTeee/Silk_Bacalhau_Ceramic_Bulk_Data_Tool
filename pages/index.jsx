@@ -1,3 +1,4 @@
+// pages/index.js or pages/index.tsx
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
@@ -8,6 +9,7 @@ import PostItem from "../components/PostItem";
 import Footer from "../components/Footer";
 import { LoadingCircle } from "../components/Icons";
 import { useOrbis } from "@orbisclub/components";
+import { useRouter } from 'next/router';
 
 function Home({ defaultPosts }) {
   const { orbis, user } = useOrbis();
@@ -16,6 +18,8 @@ function Home({ defaultPosts }) {
   const [posts, setPosts] = useState();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (global.orbis_context) {
@@ -157,6 +161,14 @@ function Home({ defaultPosts }) {
     // Store data in ComposeDB
     const storeResponse = await storeDataInComposeDB(data);
     console.log("Data Storage Response:", storeResponse);
+
+    // Call the API route to run the terminal command
+    const commandResponse = await fetch('/api/runCommand');
+    const commandData = await commandResponse.json();
+    console.log("Command Response:", commandData);
+
+    // Redirect to another page or perform other actions if needed
+    router.push('/success'); // Replace with the desired destination
   };
 
   return (

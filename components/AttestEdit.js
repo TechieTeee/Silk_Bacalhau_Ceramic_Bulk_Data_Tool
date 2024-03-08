@@ -8,10 +8,9 @@ import { shortAddress } from "../utils";
 import { RotatingLines } from "react-loader-spinner";
 import { initSilk } from "@silk-wallet/silk-wallet-sdk";
 import { Alchemy, Network } from "alchemy-sdk";
-import { env } from "../env.mjs";
-import { exec } from "child_process";
+import {env} from "../env.mjs"
 
-const { NEXT_PUBLIC_ALCHEMY_API_KEY } = env;
+const {NEXT_PUBLIC_ALCHEMY_API_KEY} = env;
 
 const AttestEditor = ({ context }) => {
   const eas = new EAS(EASContractAddress);
@@ -28,7 +27,8 @@ const AttestEditor = ({ context }) => {
   };
   const alchemy = new Alchemy(config);
 
-  /** Will load the details of the context and check if the user has access to it */
+
+  /** Will load the details of the context and check if user has access to it  */
   useEffect(() => {
     if (user) {
       checkHolo(user.metadata.address);
@@ -93,19 +93,14 @@ const AttestEditor = ({ context }) => {
       requestOptions
     ).then((response) => response.json());
     if (gotAttestations.data.accountAttestationIndex === null) {
-      console.log(
-        gotAttestations.data
-      );
+      console.log(gotAttestations.data);
       return;
     }
-    console.log(
-      gotAttestations.data.accountAttestationIndex.edges.length
-    );
+    console.log(gotAttestations.data.accountAttestationIndex.edges.length);
     const arr = [];
     for (
       let i = 0;
-      i <
-      gotAttestations.data.accountAttestationIndex.edges.length;
+      i < gotAttestations.data.accountAttestationIndex.edges.length;
       i++
     ) {
       const obj = {
@@ -115,11 +110,9 @@ const AttestEditor = ({ context }) => {
             ? true
             : false,
         attester:
-          gotAttestations.data.accountAttestationIndex.edges[i].node
-            .attester,
+          gotAttestations.data.accountAttestationIndex.edges[i].node.attester,
         recipient:
-          gotAttestations.data.accountAttestationIndex.edges[i].node
-            .recipient,
+          gotAttestations.data.accountAttestationIndex.edges[i].node.recipient,
         id: gotAttestations.data.accountAttestationIndex.edges[i].node.id,
       };
 
@@ -130,9 +123,7 @@ const AttestEditor = ({ context }) => {
   }
 
   async function attest(address) {
-    const network = await ethereum.request({
-      method: "eth_chainId",
-    });
+    const network = await ethereum.request({ method: "eth_chainId" });
     if (network !== "0x1") {
       await switchNetwork();
     }
@@ -141,28 +132,24 @@ const AttestEditor = ({ context }) => {
       setRecipient("");
       return;
     }
-    if (address.includes(".eth")) {
-      if (NEXT_PUBLIC_ALCHEMY_API_KEY) {
-        const resolved = await alchemy.core.resolveName(address);
+    if(address.includes('.eth')){
+      if(NEXT_PUBLIC_ALCHEMY_API_KEY){
+        const resolved = await alchemy.core.resolveName(address)
         address = resolved;
       } else {
-        alert("ENS names not yet supported");
-        setRecipient("");
+        alert("ENS names not yet supported")
+        setRecipient("")
         return;
       }
     }
-    if (
-      address.toLowerCase() === user.metadata.address.toLowerCase()
-    ) {
+    if (address.toLowerCase() === user.metadata.address.toLowerCase()) {
       alert("You cannot attest to yourself");
       setRecipient("");
       return;
     }
-    const silk = initSilk();
-    window.ethereum = silk;
-    const provider = new ethers.providers.Web3Provider(
-      window.ethereum
-    );
+    const silk = initSilk()
+    window.ethereum = silk
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     eas.connect(signer);
 
@@ -191,6 +178,10 @@ const AttestEditor = ({ context }) => {
       },
       signer
     );
+    // un-comment the below to process an on-chain timestamp
+    // const transaction = await eas.timestamp(offchainAttestation.uid);
+    // // Optional: Wait for the transaction to be validated
+    // await transaction.wait();
 
     const requestBody = {
       ...offchainAttestation,
@@ -201,15 +192,10 @@ const AttestEditor = ({ context }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     };
-    // Call attest API endpoint to store attestation on ComposeDB
+    // call attest api endpoint to store attestation on ComposeDB
     await fetch("/api/attest", requestOptions)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-
-        // Run terminal command after attestation is complete
-        runTerminalCommand();
-      });
+      .then((data) => console.log(data));
 
     setRecipient("");
     grabAttestations();
@@ -218,24 +204,6 @@ const AttestEditor = ({ context }) => {
   /** Will update title field */
   const handleAddressChange = (e) => {
     setRecipient(e.target.value);
-  };
-
-  /** Run terminal command */
-  const runTerminalCommand = () => {
-    // Docker command to create Bacalhau job with the uploaded asset
-    // Post attestation and record uplaod to ComposeDB
-    const terminalCommand =
-      'docker run -t ghcr.io/bacalhau-project/bacalhau:latest docker run --id-only --wait ubuntu:latest -- sh -c "uname -a && echo \\"Thank you for making clean water possible and being part of the Water is Life Community\\" "';
-
-    // Run the terminal command
-    exec(terminalCommand, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
-    });
   };
 
   return (
@@ -271,9 +239,7 @@ const AttestEditor = ({ context }) => {
                             {shortAddress(a.attester)}&nbsp;
                           </p>
                           <p className="text-base text-secondary mb-2">
-                            {a.given
-                              ? "gave to "
-                              : "received from "}&nbsp;
+                            {a.given ? "gave to " : "received from "}&nbsp;
                           </p>
                           <p className="text-base text-secondary mb-2">
                             {shortAddress(a.recipient)}
@@ -299,12 +265,7 @@ const AttestEditor = ({ context }) => {
                     No attestations yet
                   </p>
                 ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     <RotatingLines
                       strokeColor="grey"
                       strokeWidth="5"
@@ -328,9 +289,7 @@ const AttestEditor = ({ context }) => {
               <button
                 className="btn-sm py-1.5 btn-brand"
                 onClick={() =>
-                  window.open(
-                    "https://silksecure.net/holonym/silk"
-                  )
+                  window.open("https://silksecure.net/holonym/silk")
                 }
               >
                 Visit Silk by Holonym
@@ -342,5 +301,4 @@ const AttestEditor = ({ context }) => {
     </div>
   );
 };
-
 export default AttestEditor;
