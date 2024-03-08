@@ -97,11 +97,68 @@ function Home({ defaultPosts }) {
     setLoading(false);
   }
 
+  const readDataFromCSV = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = async (event) => {
+        const csvData = event.target.result;
+
+        // Parse CSV using papaparse
+        Papa.parse(csvData, {
+          complete: (result) => {
+            // If each CSV has a header row, result.data contains an array of objects
+            const csvDataArray = result.data;
+
+            // Each row is an object with columns as keys
+            const formattedData = csvDataArray.map((row) => {
+              return {
+                ph: parseFloat(row.ph),
+                Hardness: parseFloat(row.Hardness),
+                Solids: parseFloat(row.Solids),
+                Chloramines: parseFloat(row.Chloramines),
+                Sulfate: parseFloat(row.Sulfate),
+                Conductivity: parseFloat(row.Conductivity),
+                Organic_carbon: parseFloat(row.Organic_carbon),
+                Trihalomethanes: parseFloat(row.Trihalomethanes),
+                Turbidity: parseFloat(row.Turbidity),
+                Potability: parseInt(row.Potability),
+              };
+            });
+
+            resolve(formattedData);
+          },
+          error: (error) => {
+            reject(error.message);
+          },
+          header: true, // True if the CSV has a header row
+        });
+      };
+
+      reader.readAsText(file);
+    });
+  };
+
+  const handleUploadButtonClick = async (event) => {
+    const file = event.target.files[0];
+    const data = await readDataFromCSV(file);
+
+    // Further processing can be added or storing can be done as needed
+    console.log("Uploaded Data:", data);
+
+    // Example: Store data using CeramicDB or ComposeDB
+    const ceramicApiUrl = "http://localhost:7007";
+  };
+
   return (
     <>
       <Head>
         <title key="title">WaterLab | WaterLab</title>
-        <meta property="og:title" content="WaterLab Community Hub | WaterLab" key="og_title" />
+        <meta
+          property="og:title"
+          content="WaterLab Community Hub | WaterLab"
+          key="og_title"
+        />
         <meta
           name="description"
           content="An open and decentralized social application for the WaterLab community"
@@ -119,14 +176,21 @@ function Home({ defaultPosts }) {
           <div className="min-h-screen flex">
             <main className="grow overflow-hidden">
               <Header />
-              <Hero title="WaterLab Community Hub" description="A decentralized research community" />
+              <Hero
+                title="WaterLab Community Hub"
+                description="A decentralized research community"
+              />
               <section>
                 {global.orbis_context ? (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6">
                     <div className="md:flex md:justify-between">
                       <div className="md:grow pt-3 pb-12 md:pb-20">
                         <div className="md:pr-6 lg:pr-10">
-                          <CategoriesNavigation categories={categories} nav={nav} setNav={setNav} />
+                          <CategoriesNavigation
+                            categories={categories}
+                            nav={nav}
+                            setNav={setNav}
+                          />
                           {loading ? (
                             <div className="flex w-full justify-center p-3 text-primary">
                               <LoadingCircle />
@@ -138,7 +202,10 @@ function Home({ defaultPosts }) {
                                   <div className="mb-12">
                                     <div className="flex flex-col space-y-6 mb-8">
                                       {posts.map((post) => (
-                                        <PostItem key={post.stream_id} post={post} />
+                                        <PostItem
+                                          key={post.stream_id}
+                                          post={post}
+                                        />
                                       ))}
                                     </div>
                                     {posts && posts.length >= 25 && (
@@ -147,7 +214,10 @@ function Home({ defaultPosts }) {
                                           className="btn-sm py-1.5 h-8 btn-secondary btn-secondary-hover"
                                           onClick={() => setPage(page + 1)}
                                         >
-                                          Next page <span className="tracking-normal ml-1">-&gt;</span>
+                                          Next page{" "}
+                                          <span className="tracking-normal ml-1">
+                                            -&gt;
+                                          </span>
                                         </button>
                                       </div>
                                     )}
@@ -155,7 +225,9 @@ function Home({ defaultPosts }) {
                                 </>
                               ) : (
                                 <div className="w-full text-center bg-white/10 rounded border border-primary bg-secondary p-6">
-                                  <p className="text-sm text-secondary">There aren&apos;t any posts shared here.</p>
+                                  <p className="text-sm text-secondary">
+                                    There aren&apos;t any posts shared here.
+                                  </p>
                                 </div>
                               )}
                             </>
@@ -168,16 +240,22 @@ function Home({ defaultPosts }) {
                 ) : (
                   <div className="flex flex-col md:pr-6 lg:pr-10 items-center">
                     <p className="text-base text-primary">
-                      To get started you need to create your own context using our Dashboard.
+                      To get started you need to create your own context using
+                      our Dashboard.
                     </p>
                     <ol className="text-base list-decimal text-sm text-primary list-inside text-center justify-center mt-3 w-2/3">
                       <li className="text-base">
-                        Visit our Dashboard and create your own <b>Project</b> and <b>Context</b>.
+                        Visit our Dashboard and create your own <b>Project</b>{" "}
+                        and <b>Context</b>.
                       </li>
                       <li className="text-base">
-                        Create categories for your community by adding <b>sub-contexts</b> to the context you just created.
+                        Create categories for your community by adding{" "}
+                        <b>sub-contexts</b> to the context you just created.
                       </li>
-                      <li className="text-base">Go into <b>_app.js</b> and update the <b>global.orbis_context</b> value.</li>
+                      <li className="text-base">
+                        Go into <b>_app.js</b> and update the{" "}
+                        <b>global.orbis_context</b> value.
+                      </li>
                     </ol>
                     <Link
                       href="https://useorbis.com/dashboard"
@@ -194,6 +272,19 @@ function Home({ defaultPosts }) {
         </div>
         <Footer />
       </div>
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleUploadButtonClick}
+        className="hidden"
+        id="upload-data-input"
+      />
+      <label
+        htmlFor="upload-data-input"
+        className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
+      >
+        Upload Data
+      </label>
     </>
   );
 }
@@ -216,9 +307,12 @@ const CategoriesNavigation = ({ categories, nav, setNav }) => {
           <Link href="/create" className="btn-sm py-1.5 btn-brand">
             Create Post
           </Link>
-          <Link href="/upload" className="btn-sm py-1.5 btn-main ml-2">
+          <label
+            htmlFor="upload-data-input"
+            className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
+          >
             Upload Data
-          </Link>
+          </label>
         </div>
       </div>
     </div>
