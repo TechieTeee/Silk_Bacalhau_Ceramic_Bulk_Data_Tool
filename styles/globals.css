@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Lilita+One&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -57,7 +58,7 @@ html {
 
 }
 body {
-  background: #FFF;
+  background: #FFD72D;
   font-family: "Inter";
   /*background-image: linear-gradient(to right, var(--tw-gradient-stops));
   --tw-gradient-from: #FEF6EB;
@@ -591,4 +592,16 @@ input[type=range]::-moz-focus-outer {
     y: 11;
     transform: rotate(135deg);
     transition: y 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1), width 0.1s ease-out;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Black Han Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.title-font {
+  font-family: 'Black Han Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }

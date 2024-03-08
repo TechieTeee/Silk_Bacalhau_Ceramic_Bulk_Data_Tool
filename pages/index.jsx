@@ -174,16 +174,16 @@ function Home({ defaultPosts }) {
   return (
     <>
       <Head>
-        <title key="title">WaterLab | WaterLab</title>
-        <meta property="og:title" content="WaterLab Community Hub | WaterLab" key="og_title" />
+        <title key="title">Water is Life</title>
+        <meta property="og:title" content="Water is Life Community Hub" key="og_title" />
         <meta
           name="description"
-          content="An open and decentralized social application for the WaterLab community"
+          content="A research collaboration tool for citizen scientists to promote global, water quality"
           key="description"
         ></meta>
         <meta
           property="og:description"
-          content="An open and decentralized social application for the WaterLab community"
+          content="A research collaboration tool for citizen scientists to promote global, water quality"
           key="og_description"
         />
         <link rel="icon" href="/favicon.png" />
@@ -193,7 +193,7 @@ function Home({ defaultPosts }) {
           <div className="min-h-screen flex">
             <main className="grow overflow-hidden">
               <Header />
-              <Hero title="WaterLab Community Hub" description="A decentralized research community" />
+              <Hero title={<span style={{ fontFamily: 'Black Han Sans, sans-serif', fontWeight: 400, fontStyle: 'normal' }}>Water is Life Community Hub</span>} description="A decentralized research community" />
               <section>
                 {global.orbis_context ? (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6">
