@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image"; 
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
@@ -171,6 +172,77 @@ function Home({ defaultPosts }) {
     router.push('/success'); // Replace with the desired destination
   };
 
+  const CategoriesNavigation = ({ categories, nav, setNav }) => {
+    return (
+      <div className="border-b border-primary pb-6 mb-6">
+        <div className="text-center md:text-left md:flex justify-between items-center">
+          <ul className="grow inline-flex flex-wrap text-sm font-medium -mx-3 -my-1">
+            <NavItem
+              selected={nav}
+              category={{ stream_id: "all", content: { displayName: "All" } }}
+              onClick={setNav}
+            />
+            {categories.map((category, key) => (
+              <NavItem key={key} selected={nav} category={category} onClick={setNav} />
+            ))}
+          </ul>
+          <div className="mb-4 md:mb-0 md:order-1 md:ml-6">
+            <Link href="/create" className="btn-sm py-1.5 btn-brand">
+              Create Post
+            </Link>
+            <label
+              htmlFor="upload-data-input"
+              className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
+            >
+              Upload Data
+            </label>
+          </div>
+        </div>
+
+        {/* Table added below the buttons */}
+        <div className="mt-4">
+        <div className="mb-2 text-white text-lg font-bold">Recent Readings</div>
+          <table className="table-auto w-full text-white">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">pH</th>
+                <th className="px-4 py-2">Hardness</th>
+                <th className="px-4 py-2">Potability</th>
+                {/* Add more headers as needed */}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border px-4 py-2">3.71</td>
+                <td className="border px-4 py-2">129.4</td>
+                <td className="border px-4 py-2">0</td>
+                {/* Add more data cells as needed */}
+              </tr>
+              {/* Add more rows as needed */}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  const NavItem = ({ selected, category, onClick }) => {
+    return (
+      <li className="px-3 py-1">
+        <span
+          className={`relative transition duration-150 ease-in-out ${
+            selected == category.stream_id
+              ? "text-brand underline underline-offset-4"
+              : "cursor-pointer text-secondary hover:underline"
+          }`}
+          onClick={() => onClick(category.stream_id)}
+        >
+          {category.content.displayName}
+        </span>
+      </li>
+    );
+  };
+
   return (
     <>
       <Head>
@@ -193,7 +265,26 @@ function Home({ defaultPosts }) {
           <div className="min-h-screen flex">
             <main className="grow overflow-hidden">
               <Header />
-              <Hero title={<span style={{ fontFamily: 'Black Han Sans, sans-serif', fontWeight: 400, fontStyle: 'normal' }}>Water is Life Community Hub</span>} description="A decentralized research community" />
+              
+              {/* Add the Image component for the hero image */}
+              <div className="relative h-96">
+                <Image
+                  src="/Water_Life_Hero_Image.jpg"
+                  alt="Water is Life Hero Image"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+
+              <Hero
+                title={
+                  <span style={{ fontFamily: 'Black Han Sans, sans-serif', fontWeight: 400, fontStyle: 'normal' }}>
+                    Water is Life Community Hub
+                  </span>
+                }
+                description="The Water is Life project aims to revolutionize water quality enhancement by uniting global citizen scientists through blockchain technology, decentralized identity, and automated data processing. With the mission to combat water-related diseases affecting 400,000 children annually, the initiative leverages tools like Silk Wallet for seamless Ethereum interaction, EAS for on-chain attestations, ComposeDB for secure data storage, and Bacalhau for automated data processing. Empowering individuals worldwide, the project fosters a decentralized group of citizen scientists working collaboratively to improve water quality, reducing the need for formal data science training while maximizing the impact of their crucial work."
+              />
+              
               <section>
                 {global.orbis_context ? (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -236,7 +327,7 @@ function Home({ defaultPosts }) {
                               ) : (
                                 <div className="w-full text-center bg-white/10 rounded border border-primary bg-secondary p-6">
                                   <p className="text-sm text-secondary">
-                                    There aren&apos;t any posts shared here.
+                                    There aren't any posts shared here.
                                   </p>
                                 </div>
                               )}
@@ -292,52 +383,5 @@ function Home({ defaultPosts }) {
     </>
   );
 }
-
-const CategoriesNavigation = ({ categories, nav, setNav }) => {
-  return (
-    <div className="border-b border-primary pb-6 mb-6">
-      <div className="text-center md:text-left md:flex justify-between items-center">
-        <ul className="grow inline-flex flex-wrap text-sm font-medium -mx-3 -my-1">
-          <NavItem
-            selected={nav}
-            category={{ stream_id: "all", content: { displayName: "All" } }}
-            onClick={setNav}
-          />
-          {categories.map((category, key) => (
-            <NavItem key={key} selected={nav} category={category} onClick={setNav} />
-          ))}
-        </ul>
-        <div className="mb-4 md:mb-0 md:order-1 md:ml-6">
-          <Link href="/create" className="btn-sm py-1.5 btn-brand">
-            Create Post
-          </Link>
-          <label
-            htmlFor="upload-data-input"
-            className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
-          >
-            Upload Data
-          </label>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const NavItem = ({ selected, category, onClick }) => {
-  return (
-    <li className="px-3 py-1">
-      <span
-        className={`relative transition duration-150 ease-in-out ${
-          selected == category.stream_id
-            ? "text-brand underline underline-offset-4"
-            : "cursor-pointer text-secondary hover:underline"
-        }`}
-        onClick={() => onClick(category.stream_id)}
-      >
-        {category.content.displayName}
-      </span>
-    </li>
-  );
-};
 
 export default Home;

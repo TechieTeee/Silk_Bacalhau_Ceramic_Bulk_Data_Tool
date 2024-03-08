@@ -12,7 +12,7 @@ function Footer() {
             <div className="shrink-0 mr-4">
               {/* Logo */}
               <Link className="inline-flex group mb-8 md:mb-0 text-primary" href="/">
-                <img src="/logo-gray.png" className="h-8" />
+                <img src="/Water_Life_Logo (2).png" className="h-16" />
               </Link>
             </div>
             {/* Right links */}
@@ -25,7 +25,6 @@ function Footer() {
                 </li>*/}
                 <li>
                   <Link className="text-secondary hover:underline flex flex-row items-center" href="https://www.rh2o.app" target="_blank">
-                    Built by WaterLab
                   </Link>
                 </li>
 

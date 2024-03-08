@@ -58,7 +58,6 @@ html {
 
 }
 body {
-  background: #FFD72D;
   font-family: "Inter";
   /*background-image: linear-gradient(to right, var(--tw-gradient-stops));
   --tw-gradient-from: #FEF6EB;
@@ -88,7 +87,7 @@ p, ul, li, span, input, button {
 
 /** Theme colors */
 .bg-main {
-  background-color: var(--bg-color);
+  background-color: #000000;
 }
 .bg-secondary {
   background-color: var(--bg-secondary);
@@ -385,12 +384,21 @@ a {
 }
 
 .btn {
-    @apply px-5 py-2.5;
+    @apply px-5 py-2.5 bg-yellow-500 text-white; /* Updated color */
+}
+
+.btn:hover {
+    @apply bg-yellow-600; /* Updated hover color */
 }
 
 .btn-sm {
-    @apply px-4 py-2;
+    @apply px-4 py-2 bg-yellow-500 text-white; /* Updated color */
 }
+
+.btn-sm:hover {
+    @apply bg-yellow-600; /* Updated hover color */
+}
+
 
 /* Forms */
 input[type="search"]::-webkit-search-decoration,
