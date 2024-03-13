@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import { LoadingCircle } from "../components/Icons";
 import { useOrbis } from "@orbisclub/components";
 import { useRouter } from 'next/router';
+import Papa from "papaparse";
 
 function Home({ defaultPosts }) {
   const { orbis, user } = useOrbis();
