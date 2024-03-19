@@ -20,6 +20,8 @@ function Home({ defaultPosts }) {
   const [posts, setPosts] = useState();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+   // State for upload status
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   const router = useRouter();
 
@@ -164,13 +166,22 @@ function Home({ defaultPosts }) {
     const storeResponse = await storeDataInComposeDB(data);
     console.log("Data Storage Response:", storeResponse);
 
+    // Check if data is successfully stored and set uploadStatus accordingly
+    if (storeResponse.success) {
+      setUploadStatus('success');
+      console.log('Upload successful');
+    } else {
+      setUploadStatus('failed');
+      console.log('Upload failed');
+    }
+
     // Call the API route to run the terminal command
     const commandResponse = await fetch('/api/runCommand');
     const commandData = await commandResponse.json();
     console.log("Command Response:", commandData);
 
     // Redirect to another page or perform other actions if needed
-    router.push('/success'); // Replace with the desired destination
+    router.push('/success');
   };
 
   const CategoriesNavigation = ({ categories, nav, setNav }) => {
@@ -200,7 +211,7 @@ function Home({ defaultPosts }) {
           </div>
         </div>
 
-        {/* Table added below the buttons */}
+        {/* Example Data Table */}
         <div className="mt-4">
         <div className="mb-2 text-white text-lg font-bold">Recent Readings</div>
           <table className="table-auto w-full text-white">
@@ -209,7 +220,6 @@ function Home({ defaultPosts }) {
                 <th className="px-4 py-2">pH</th>
                 <th className="px-4 py-2">Hardness</th>
                 <th className="px-4 py-2">Potability</th>
-                {/* Add more headers as needed */}
               </tr>
             </thead>
             <tbody>
@@ -217,9 +227,7 @@ function Home({ defaultPosts }) {
                 <td className="border px-4 py-2">3.71</td>
                 <td className="border px-4 py-2">129.4</td>
                 <td className="border px-4 py-2">0</td>
-                {/* Add more data cells as needed */}
               </tr>
-              {/* Add more rows as needed */}
             </tbody>
           </table>
         </div>
@@ -267,7 +275,7 @@ function Home({ defaultPosts }) {
             <main className="grow overflow-hidden">
               <Header />
               
-              {/* Add the Image component for the hero image */}
+              {/* Hero image */}
               <div className="relative h-96">
                 <Image
                   src="/Water_Life_Hero_Image.jpg"
@@ -381,6 +389,18 @@ function Home({ defaultPosts }) {
         className="hidden"
         id="upload-data-input"
       />
+      {/* Render the success message conditionally */}
+      {uploadStatus === 'success' && (
+        <div className="fixed bottom-0 left-0 right-0 bg-green-500 text-white p-4 text-center">
+          Upload successful!
+        </div>
+      )}
+      {/* Render the failure message conditionally */}
+      {uploadStatus === 'failed' && (
+        <div className="fixed bottom-0 left-0 right-0 bg-red-500 text-white p-4 text-center">
+          Upload failed!
+        </div>
+      )}
     </>
   );
 }
