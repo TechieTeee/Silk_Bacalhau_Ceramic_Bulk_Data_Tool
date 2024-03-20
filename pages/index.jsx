@@ -20,8 +20,8 @@ function Home({ defaultPosts }) {
   const [posts, setPosts] = useState();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  // State for upload status
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+   // State for upload status
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   const router = useRouter();
 
@@ -168,10 +168,10 @@ function Home({ defaultPosts }) {
 
     // Check if data is successfully stored and set uploadStatus accordingly
     if (storeResponse.success) {
-      setShowSuccessPopup(true);
+      setUploadStatus('success');
       console.log('Upload successful');
     } else {
-      setShowSuccessPopup(false);
+      setUploadStatus('failed');
       console.log('Upload failed');
     }
 
@@ -249,22 +249,6 @@ function Home({ defaultPosts }) {
           {category.content.displayName}
         </span>
       </li>
-    );
-  };
-
-  const SuccessPopup = () => {
-    return (
-      <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
-        <div className="bg-white p-8 rounded shadow-lg">
-          <p className="text-2xl text-green-600 font-bold mb-4">Upload successful!</p>
-          <button
-            onClick={() => setShowSuccessPopup(false)}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            Close
-          </button>
-        </div>
-      </div>
     );
   };
 
@@ -405,8 +389,20 @@ function Home({ defaultPosts }) {
         className="hidden"
         id="upload-data-input"
       />
-      {/* Render the success popup conditionally */}
-      {showSuccessPopup && <SuccessPopup />}
+      {/* Render the success message conditionally */}
+      {uploadStatus === 'success' && (
+        <div className="fixed bottom-0 left-0 right-0 bg-green-500 text-white p-4 text-center flex justify-between items-center">
+          <p>Upload successful!</p>
+          <button className="ml-4 text-white" onClick={() => setUploadStatus(null)}>Close</button>
+        </div>
+      )}
+      {/* Render the failure message conditionally */}
+      {uploadStatus === 'failed' && (
+        <div className="fixed bottom-0 left-0 right-0 bg-red-500 text-white p-4 text-center flex justify-between items-center">
+          <p>Upload failed!</p>
+          <button className="ml-4 text-white" onClick={() => setUploadStatus(null)}>Close</button>
+        </div>
+      )}
     </>
   );
 }
