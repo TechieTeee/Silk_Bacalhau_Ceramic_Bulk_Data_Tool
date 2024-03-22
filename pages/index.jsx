@@ -20,8 +20,8 @@ function Home({ defaultPosts }) {
   const [posts, setPosts] = useState();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-   // State for upload status
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [csvData, setCsvData] = useState([]);
 
   const router = useRouter();
 
@@ -44,21 +44,13 @@ function Home({ defaultPosts }) {
     setPage(0);
 
     if (global.orbis_context) {
-      if (nav == "all") {
-        loadPosts(global.orbis_context, true, 0);
-      } else {
-        loadPosts(nav, true, 0);
-      }
+      loadPosts(nav === "all" ? global.orbis_context : nav, true, 0);
     }
   }, [nav]);
 
   useEffect(() => {
     if (global.orbis_context) {
-      if (nav == "all") {
-        loadPosts(global.orbis_context, true, page);
-      } else {
-        loadPosts(nav, true, page);
-      }
+      loadPosts(nav === "all" ? global.orbis_context : nav, true, page);
     }
   }, [page]);
 
@@ -117,24 +109,8 @@ function Home({ defaultPosts }) {
           complete: (result) => {
             // CSV has a header row, result.data contains an array of objects
             const csvDataArray = result.data;
-
-            // Each row is an object with columns as keys
-            const formattedData = csvDataArray.map((row) => {
-              return {
-                ph: parseFloat(row.ph),
-                Hardness: parseFloat(row.Hardness),
-                Solids: parseFloat(row.Solids),
-                Chloramines: parseFloat(row.Chloramines),
-                Sulfate: parseFloat(row.Sulfate),
-                Conductivity: parseFloat(row.Conductivity),
-                Organic_carbon: parseFloat(row.Organic_carbon),
-                Trihalomethanes: parseFloat(row.Trihalomethanes),
-                Turbidity: parseFloat(row.Turbidity),
-                Potability: parseInt(row.Potability),
-              };
-            });
-
-            resolve(formattedData);
+            setCsvData(csvDataArray);
+            resolve(csvDataArray);
           },
           error: (error) => {
             reject(error.message);
@@ -160,10 +136,10 @@ function Home({ defaultPosts }) {
 
   const handleUploadButtonClick = async (event) => {
     const file = event.target.files[0];
-    const data = await readDataFromCSV(file);
+    const csvData = await readDataFromCSV(file);
 
     // Store data in ComposeDB
-    const storeResponse = await storeDataInComposeDB(data);
+    const storeResponse = await storeDataInComposeDB(csvData);
     console.log("Data Storage Response:", storeResponse);
 
     // Check if data is successfully stored and set uploadStatus accordingly
@@ -210,24 +186,25 @@ function Home({ defaultPosts }) {
             </label>
           </div>
         </div>
-
         {/* Example Data Table */}
         <div className="mt-4">
-        <div className="mb-2 text-white text-lg font-bold">Recent Readings</div>
+          <div className="mb-2 text-white text-lg font-bold">Recent Readings</div>
           <table className="table-auto w-full text-white">
             <thead>
               <tr>
-                <th className="px-4 py-2">pH</th>
-                <th className="px-4 py-2">Hardness</th>
-                <th className="px-4 py-2">Potability</th>
+                {csvData && csvData.length > 0 && Object.keys(csvData[0]).map((key, index) => (
+                  <th className="px-4 py-2" key={index}>{key}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border px-4 py-2">3.71</td>
-                <td className="border px-4 py-2">129.4</td>
-                <td className="border px-4 py-2">0</td>
-              </tr>
+              {csvData.map((rowData, rowIndex) => (
+                <tr key={rowIndex}>
+                  {Object.values(rowData).map((data, columnIndex) => (
+                    <td className="border px-4 py-2" key={columnIndex}>{data}</td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -274,7 +251,6 @@ function Home({ defaultPosts }) {
           <div className="min-h-screen flex">
             <main className="grow overflow-hidden">
               <Header />
-              
               {/* Hero image */}
               <div className="relative h-96">
                 <Image
@@ -284,7 +260,6 @@ function Home({ defaultPosts }) {
                   objectFit="contain"
                 />
               </div>
-
               <Hero
                 title={
                   <span style={{ fontFamily: 'Black Han Sans, sans-serif', fontWeight: 400, fontStyle: 'normal' }}>
@@ -293,7 +268,6 @@ function Home({ defaultPosts }) {
                 }
                 description="The Water is Life project aims to revolutionize water quality enhancement by uniting global citizen scientists through blockchain technology, decentralized identity, and automated data processing. With the mission to combat water-related diseases affecting 400,000 children annually, the initiative leverages tools like Silk Wallet for seamless Ethereum interaction, EAS for on-chain attestations, ComposeDB for secure data storage, and Bacalhau for automated data processing. Empowering individuals worldwide, the project fosters a decentralized group of citizen scientists working collaboratively to improve water quality, reducing the need for formal data science training while maximizing the impact of their crucial work."
               />
-              
               <section>
                 {global.orbis_context ? (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6">
