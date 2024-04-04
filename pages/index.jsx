@@ -1,4 +1,3 @@
-// pages/index.js or pages/index.tsx
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
@@ -22,6 +21,8 @@ function Home({ defaultPosts }) {
   const [categories, setCategories] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(null);
   const [csvData, setCsvData] = useState([]);
+  
+  const [attestationSuccess, setAttestationSuccess] = useState(false);
 
   const router = useRouter();
 
@@ -148,21 +149,26 @@ function Home({ defaultPosts }) {
 
     // Check if data is successfully stored and set uploadStatus accordingly
     if (storeResponse.success) {
-      setUploadStatus('success');
-      console.log('Upload successful');
+      setUploadStatus("success"); // Updating uploadStatus state here
+      console.log("Upload successful");
     } else {
-      setUploadStatus('failed');
-      console.log('Upload failed');
+      setUploadStatus("failed");
+      console.log("Upload failed");
     }
 
     // Call the API route to run the terminal command
-    const commandResponse = await fetch('/api/runCommand');
+    const commandResponse = await fetch("/api/runCommand");
     const commandData = await commandResponse.json();
     console.log("Command Response:", commandData);
 
     // Redirect to another page or perform other actions if needed
-    router.push('/success');
+    router.push("/success");
   };
+
+  const handleAttestationSuccess = () => {
+    setAttestationSuccess(true);
+  };
+  
 
   const CategoriesNavigation = ({ categories, nav, setNav }) => {
     return (
@@ -178,17 +184,6 @@ function Home({ defaultPosts }) {
               <NavItem key={key} selected={nav} category={category} onClick={setNav} />
             ))}
           </ul>
-          <div className="mb-4 md:mb-0 md:order-1 md:ml-6">
-            <Link href="/create" className="btn-sm py-1.5 btn-brand">
-              Create Post
-            </Link>
-            <label
-              htmlFor="upload-data-input"
-              className="btn-sm py-1.5 btn-main ml-2 cursor-pointer"
-            >
-              Upload Data
-            </label>
-          </div>
         </div>
         {/* Example Data Table */}
         <div className="mt-4">
@@ -389,12 +384,12 @@ function Home({ defaultPosts }) {
         id="upload-data-input"
       />
       {/* Render the success message conditionally */}
-      {uploadStatus === "success" && (
+      {attestationSuccess && (
         <div className="fixed bottom-0 left-0 right-0 bg-green-500 text-white p-4 text-center flex justify-between items-center">
-          <p>Upload successful!</p>
+          <p>Attestation successful!</p>
           <button
             className="ml-4 text-white"
-            onClick={() => setUploadStatus(null)}
+            onClick={() => setAttestationSuccess(false)}
           >
             Close
           </button>
@@ -403,7 +398,7 @@ function Home({ defaultPosts }) {
       {/* Render the failure message conditionally */}
       {uploadStatus === "failed" && (
         <div className="fixed bottom-0 left-0 right-0 bg-red-500 text-white p-4 text-center flex justify-between items-center">
-          <p>Upload failed!</p>
+          <p>Upload failed! Attestation creation failed.</p>
           <button
             className="ml-4 text-white"
             onClick={() => setUploadStatus(null)}
@@ -412,6 +407,19 @@ function Home({ defaultPosts }) {
           </button>
         </div>
       )}
+
+      {/* Create Post and Upload Data buttons */}
+      <div className="fixed bottom-10 right-10 flex flex-col space-y-2">
+        <Link href="/create" className="btn-sm py-1.5 btn-brand">
+          Create Post
+        </Link>
+        <label
+          htmlFor="upload-data-input"
+          className="btn-sm py-1.5 btn-main cursor-pointer"
+        >
+          Upload Data
+        </label>
+      </div>
     </>
   );
 }
