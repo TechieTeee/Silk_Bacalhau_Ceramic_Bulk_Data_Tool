@@ -138,6 +138,10 @@ function Home({ defaultPosts }) {
     const file = event.target.files[0];
     const csvData = await readDataFromCSV(file);
 
+    // Limiting displayed rows to top 5 after upload
+    const displayedRows = csvData.slice(0, 6); // Limiting to the top 5 rows, including title row
+    setCsvData(displayedRows);
+
     // Store data in ComposeDB
     const storeResponse = await storeDataInComposeDB(csvData);
     console.log("Data Storage Response:", storeResponse);
@@ -233,7 +237,11 @@ function Home({ defaultPosts }) {
     <>
       <Head>
         <title key="title">Water is Life</title>
-        <meta property="og:title" content="Water is Life Community Hub" key="og_title" />
+        <meta
+          property="og:title"
+          content="Water is Life Community Hub"
+          key="og_title"
+        />
         <meta
           name="description"
           content="A research collaboration tool for citizen scientists to promote global, water quality"
@@ -254,15 +262,28 @@ function Home({ defaultPosts }) {
               {/* Hero image */}
               <div className="relative h-96">
                 <Image
-                  src="/Water_Life_Hero_Image.jpg"
+                  src="/Silk_Hero_Image_Redesign.png"
                   alt="Water is Life Hero Image"
                   layout="fill"
                   objectFit="contain"
+                  className="rounded-md"
                 />
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
+                  <h1 className="text-white font-Figtree text-3xl lg:text-4xl xl:text-4xl animate-pulse">
+                    A Silk powered community
+                  </h1>
+                </div>
               </div>
+
               <Hero
                 title={
-                  <span style={{ fontFamily: 'Black Han Sans, sans-serif', fontWeight: 400, fontStyle: 'normal' }}>
+                  <span
+                    style={{
+                      fontFamily: "Black Han Sans, Figtree",
+                      fontWeight: 400,
+                      fontStyle: "normal",
+                    }}
+                  >
                     Water is Life Community Hub
                   </span>
                 }
@@ -274,7 +295,11 @@ function Home({ defaultPosts }) {
                     <div className="md:flex md:justify-between">
                       <div className="md:grow pt-3 pb-12 md:pb-20">
                         <div className="md:pr-6 lg:pr-10">
-                          <CategoriesNavigation categories={categories} nav={nav} setNav={setNav} />
+                          <CategoriesNavigation
+                            categories={categories}
+                            nav={nav}
+                            setNav={setNav}
+                          />
                           {loading ? (
                             <div className="flex w-full justify-center p-3 text-primary">
                               <LoadingCircle />
@@ -364,17 +389,27 @@ function Home({ defaultPosts }) {
         id="upload-data-input"
       />
       {/* Render the success message conditionally */}
-      {uploadStatus === 'success' && (
+      {uploadStatus === "success" && (
         <div className="fixed bottom-0 left-0 right-0 bg-green-500 text-white p-4 text-center flex justify-between items-center">
           <p>Upload successful!</p>
-          <button className="ml-4 text-white" onClick={() => setUploadStatus(null)}>Close</button>
+          <button
+            className="ml-4 text-white"
+            onClick={() => setUploadStatus(null)}
+          >
+            Close
+          </button>
         </div>
       )}
       {/* Render the failure message conditionally */}
-      {uploadStatus === 'failed' && (
+      {uploadStatus === "failed" && (
         <div className="fixed bottom-0 left-0 right-0 bg-red-500 text-white p-4 text-center flex justify-between items-center">
           <p>Upload failed!</p>
-          <button className="ml-4 text-white" onClick={() => setUploadStatus(null)}>Close</button>
+          <button
+            className="ml-4 text-white"
+            onClick={() => setUploadStatus(null)}
+          >
+            Close
+          </button>
         </div>
       )}
     </>

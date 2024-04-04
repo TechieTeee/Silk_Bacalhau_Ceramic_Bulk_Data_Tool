@@ -43,6 +43,7 @@
     "filepond": "^4.30.6",
     "html-react-parser": "^3.0.12",
     "inquirer": "^9.2.12",
+    "isomorphic-unfetch": "^4.0.2",
     "marked": "^4.2.12",
     "next": "13.2.4",
     "node": "^21.6.1",
