@@ -103,8 +103,7 @@ export default async function handler(req, res) {
                 .replaceAll('"type"', "type")}
               recipient: "${message.recipient}"
               refUID: "${message.refUID}"
-              // Include the summary here
-              summary: "${JSON.stringify(summary)}" 
+              summary: "${JSON.stringify(summary)}" // Include the summary here
               time: ${message.time}
             }
           }) 
@@ -134,7 +133,9 @@ export default async function handler(req, res) {
         }
       `);
         console.log(data);
+        // Return success message
         return res.json({
+          success: "Attestation created successfully!",
           data,
         });
       }
