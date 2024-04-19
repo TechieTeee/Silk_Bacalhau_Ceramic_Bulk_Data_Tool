@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import Image from "next/image"; 
+import Image from "next/image";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
@@ -9,7 +9,7 @@ import PostItem from "../components/PostItem";
 import Footer from "../components/Footer";
 import { LoadingCircle } from "../components/Icons";
 import { useOrbis } from "@orbisclub/components";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Papa from "papaparse";
 
 function Home({ defaultPosts }) {
@@ -21,7 +21,6 @@ function Home({ defaultPosts }) {
   const [categories, setCategories] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(null);
   const [csvData, setCsvData] = useState([]);
-  
   const [attestationSuccess, setAttestationSuccess] = useState(false);
 
   const router = useRouter();
@@ -116,7 +115,8 @@ function Home({ defaultPosts }) {
           error: (error) => {
             reject(error.message);
           },
-          header: true, // True if the CSV has a header row
+          // True if the CSV has a header row
+          header: true, 
         });
       };
 
@@ -124,12 +124,12 @@ function Home({ defaultPosts }) {
     });
   };
 
-  const storeDataInComposeDB = async (data) => {
-    // Send data to ComposeDB
+  const storeDataInComposeDB = async (summary) => {
+    // Send the summary to ComposeDB
     const response = await fetch("/api/storeDataInComposeDB", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify({ summary }),
     });
 
     return response.json();
@@ -138,35 +138,66 @@ function Home({ defaultPosts }) {
   const handleUploadButtonClick = async (event) => {
     const file = event.target.files[0];
     const csvData = await readDataFromCSV(file);
-
+  
     // Limiting displayed rows to top 5 after upload
-    const displayedRows = csvData.slice(0, 6); // Limiting to the top 5 rows, including title row
+    // Top 5 rows and title row
+    const displayedRows = csvData.slice(0, 6);
     setCsvData(displayedRows);
-
+  
     // Store data in ComposeDB
     const storeResponse = await storeDataInComposeDB(csvData);
     console.log("Data Storage Response:", storeResponse);
-
+  
     // Check if data is successfully stored and set uploadStatus accordingly
     if (storeResponse.success) {
       setUploadStatus("success"); // Updating uploadStatus state here
       console.log("Upload successful");
+  
+      // Calculate hash for the uploaded data
+      const dataHash = calculateHash(csvData);
+      console.log("Data Hash:", dataHash);
+  
+      // Set a success message for hash calculation
+      setUploadStatus("hash_calculated");
     } else {
       setUploadStatus("failed");
       console.log("Upload failed");
     }
-
+  
     // Call the API route to run the terminal command
     const commandResponse = await fetch("/api/runCommand");
     const commandData = await commandResponse.json();
     console.log("Command Response:", commandData);
-
+  
     // Redirect to another page or perform other actions if needed
     router.push("/success");
   };
+  
 
-  const handleAttestationSuccess = () => {
-    setAttestationSuccess(true);
+  const getSummary = (data) => {
+    const dimensions = { rows: data.length, cols: Object.keys(data[0]).length };
+    const description = "Water quality readings";
+    // Hashing function to create a unique fingerprint
+    const hash = calculateHash(data);
+
+    return { dimensions, description, hash };
+  };
+
+  const calculateHash = (data) => {
+    // Convert the data to a JSON string
+    const jsonData = JSON.stringify(data);
+  
+    // Create a new instance of the SHA-256 hash function
+    const crypto = require('crypto');
+    const hash = crypto.createHash('sha256');
+  
+    // Update the hash with the JSON data
+    hash.update(jsonData);
+  
+    // Calculate the hash digest in hexadecimal format
+    const hashDigest = hash.digest('hex');
+  
+    return hashDigest;
   };
   
 
@@ -181,26 +212,39 @@ function Home({ defaultPosts }) {
               onClick={setNav}
             />
             {categories.map((category, key) => (
-              <NavItem key={key} selected={nav} category={category} onClick={setNav} />
+              <NavItem
+                key={key}
+                selected={nav}
+                category={category}
+                onClick={setNav}
+              />
             ))}
           </ul>
         </div>
         {/* Example Data Table */}
         <div className="mt-4">
-          <div className="mb-2 text-white text-lg font-bold">Recent Readings</div>
+          <div className="mb-2 text-white text-lg font-bold">
+            Recent Readings
+          </div>
           <table className="table-auto w-full text-white">
             <thead>
               <tr>
-                {csvData && csvData.length > 0 && Object.keys(csvData[0]).map((key, index) => (
-                  <th className="px-4 py-2" key={index}>{key}</th>
-                ))}
+                {csvData &&
+                  csvData.length > 0 &&
+                  Object.keys(csvData[0]).map((key, index) => (
+                    <th className="px-4 py-2" key={index}>
+                      {key}
+                    </th>
+                  ))}
               </tr>
             </thead>
             <tbody>
-              {csvData.map((rowData, rowIndex) => (
+              {csvData.slice(0, 5).map((rowData, rowIndex) => (
                 <tr key={rowIndex}>
                   {Object.values(rowData).map((data, columnIndex) => (
-                    <td className="border px-4 py-2" key={columnIndex}>{data}</td>
+                    <td className="border px-4 py-2" key={columnIndex}>
+                      {data}
+                    </td>
                   ))}
                 </tr>
               ))}
