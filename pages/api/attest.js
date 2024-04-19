@@ -12,18 +12,18 @@ import { definition } from "../../src/__generated__/definition.js";
 const uniqueKey = process.env.AUTHOR_KEY;
 
 export default async function handler(req, res) {
-  const { message, uid, account, domain, types, signature } = req.body;
-  console.log(env.AUTHOR_KEY);
-  //instantiate a ceramic client instance
+  const { message, uid, account, domain, types, signature, summary } = req.body;
+
+  // Instantiate a ceramic client instance
   const ceramic = new CeramicClient("https://ceramic-arcanumsci-mainnet.hirenodes.io/");
 
-  //instantiate a composeDB client instance
+  // Instantiate a composeDB client instance
   const composeClient = new ComposeClient({
     ceramic: "https://ceramic-arcanumsci-mainnet.hirenodes.io/",
     definition,
   });
 
-  //authenticate developer DID in order to create a write transaction
+  // Authenticate developer DID in order to create a write transaction
   const authenticateDID = async (seed) => {
     const key = fromString(seed, "base16");
     const provider = new Ed25519Provider(key);
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       query {
         accountAttestationIndex(filters: {
         and: [
-          { where: { attester: { equalTo: "${req.body.account}" } } }
+          { where: { attester: { equalTo: "${account}" } } }
           { and: { where: { recipient: { equalTo: "${message.recipient}" } } } }
         ]
       } 
@@ -103,7 +103,8 @@ export default async function handler(req, res) {
                 .replaceAll('"type"', "type")}
               recipient: "${message.recipient}"
               refUID: "${message.refUID}"
-              data: "${message.data}"
+              // Include the summary here
+              summary: "${JSON.stringify(summary)}" 
               time: ${message.time}
             }
           }) 
