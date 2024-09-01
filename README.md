@@ -3,6 +3,9 @@
 ## Project Description
 The Water is Life Project is a groundbreaking initiative that combines blockchain technology, decentralized identity, and automated data processing to address the urgent global challenge of water quality. In collaboration with citizen scientists worldwide, this project aims to make a tangible impact on improving water quality for children, ultimately saving lives.
 
+## To Do
+-Need to determine how to create proof in ComposeDB for samples or summaries of the data instead of of the whole dataset - EAS isn't optimized to deal with large chunks of data
+
 ## Tools for Driving Impact
 - Silk Wallet: Silk Wallet is integrated to offer an embeddable and user-friendly wallet experience. This enhances the ease with which participants interact with Ethereum-based features, fostering a seamless and inclusive user experience.
 - Ethereum Attestation Service (EAS): EAS is leveraged for on-chain attestations, providing a robust mechanism to verify and validate user identities within the decentralized network.
